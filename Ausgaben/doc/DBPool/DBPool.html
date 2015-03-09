@@ -1,0 +1,674 @@
+<html>
+<head>
+<title>Database Connection Pooling</title>
+<meta name="Author" content="Giles Winstanley">
+<meta name="keywords" content="DBPool, dbpool, database, jdbc, connection, pool, Pool, pooling, Pooling, connection pool, java, oracle, mysql">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+
+<body bgcolor="#D0D0D0">
+<div align="center">
+<table border="0" width="85%"><tr><td>
+
+<!-- Start main page here  -->
+
+
+<div align="center">
+<h1>DBPool - Java Database Connection Pooling</h1>
+<p>Copyright &copy; Giles Winstanley<br>
+Last updated: 22nd December 2004<br>
+Latest version: 4.7.1</p>
+</div>
+
+
+<hr size="1">
+
+
+<h2>What is DBPool?</h2>
+
+<p>A Java-based database connection pooling utility, which supports time-based expiry and statement caching, connection validation, and easy configuration using a pool manager. Also included is a generic object pool which can be extended to create your own pools of custom types.</p>
+
+<p><b>Licence Agreement</b><br>
+Currently you may freely use DBPool in all applications, both commercial and non-commercial, provided it is used for the purpose intended as stated in this document. The source code is provided for reference, but you are not permitted in any way to use the code for purposes other than that which is intended. You are permitted to redistribute the original code on the condition that it is also distributed with the original documentation. If the code is changed in any way and then redistributed an acknowledgment to the source of the material must be made along with a link to the website (<a href="http://www.snaq.net">www.snaq.net</a>), <em>and it must be made plainly clear that the code has been modified from the original</em>. It is not permitted to distribute a modified version of DBPool for commercial purposes without explicit permission from the author.</p>
+<p><b>Disclaimer</b><br>
+Whilst the product has been developed with the utmost care, the author takes no responsibility for the failure of DBPool in either commercial or non-commercial operation.</p>
+
+<h2>Why would I use it?</h2>
+
+<p>Applications that make use of databases often need to frequently obtain connections to the database. For example, a popular website that is serving out information from a back-end database may need to obtain a database connection for each client who is requesting a page with their browser. To ensure the application is capable of responding to each client fast enough we need to profile the time spent performing each of it's tasks. One of the most expensive tasks involving accessing databases is the initial creation of the connection. Once the connection has been made the transaction often takes place very quickly. This is where the connection pool comes in, by retaining a pool of already-opened connections so the application can simply grab one when it needs to, use it, and then hand it back, without the long wait for the initial creation of the connection.</p>
+
+
+<h2>Where can I get it?</h2>
+
+<p>Select one of the links below to download the version you require.</p>
+<ul>
+	<li><a href="DBPool_v4.7.1.zip">Download DBPool as ZIP</a> - contains JAR file &amp; all documentation
+	<li><a href="DBPool_v4.7.1.jar">Download DBPool as JAR</a> and <a href="DBPool_v4.7.1_javadoc.zip">DBPool_javadoc.zip</a>
+	<li><a href="DBPool_v4.7.1_src.zip">Download DBPool source</a>
+</ul>
+
+
+<a name="Requirements"></a><h2>What do I need to use it?</h2>
+
+<p>The latest version requires Java 1.4 which supports the JDBC 3.0 specification.</p>
+
+<p>The pre-1.4 (pre-JDBC 3.0) version of DBPool is no longer available. If you would like to use DBPool with previous Java versions you may strip/comment out the relevant methods from the source code yourself and recompile. Relevant methods are at the end of the source files and marked with a comment reading <i>Interface methods from JDBC 3.0</i>. The source files that need this are <i>CacheConnection</i>, and the three <i>CachedXXXStatement</i> sources.</p>
+
+
+<a name="Support"></a><h2>What about support?</h2>
+
+<p>Please send all support emails concerning DBPool <a href="mailto:support@snaq.net">here</a>, and include as much information as possible to help diagnose the problem, including log file, stack traces, and source code, and properties file where appropriate. I will endeavour to reply as soon as possible, but due to the nature of my work (a lot of travel) it is possible that I won't be able to reply quickly.</p>
+
+
+<hr size="1">
+
+
+<h2>How do I use it?</h2>
+
+<p>To use DBPool you need to have the JAR file (inside the ZIP file if you downloaded that) in a location where it's available for use by the host system you are using. For standalone applications this is usually simply within the CLASSPATH, but with many application servers a specific directory is recommended for JAR libraries. (For example, when used with Apache Tomcat it can be placed in the &lt;webapp&gt;/WEB-INF/lib directory.)</p>
+
+<p>Usually DBPool is used in two different ways:</p>
+<ol>
+<li>Direct use of individual connection pools.
+<li>Using the ConnectionPoolManager to manage multiple connection pools.
+</ol>
+
+<p>If you have never used DBPool before it's recommended that you start by simply integrating a <a href="#ConnectionPool">single connection pool</a> into your application/applet to see how it works and performs. This provides the simplest direct support for pooled database connections and will get you up and running quickly. Once you learn exactly how it behaves and the benefits it can give you can try the <a href="#ConnectionPoolManager">pool manager</a> approach to manage multiple pools if necessary.</p>
+
+<p>If you require connection pooling for an application server hosted project such as a web application it is recommended that you use the <a href="#ConnectionPoolManager">pool manager</a>. This allows you to define the pooling parameters in an external file which allows you to change the parameters without recompilation of a possibly large project.</p>
+
+
+<hr size="1">
+
+
+<a name="ConnectionPool"></a><h3>Using a ConnectionPool</h3>
+
+<p>Direct use of ConnectionPool objects can provide substantial performance gains for applications with minimum changes to the previous non-pooling code. A single ConnectionPool object provides a centralized location for access to connections to a single database with specific authentication credentials and parameters.</p>
+
+<p>To create a single connection pool use a line like the following:</p>
+<pre>
+	ConnectionPool pool = new ConnectionPool(&lt;poolname&gt;,
+ 	                                         &lt;maxpool&gt;,
+	                                         &lt;maxconn&gt;,
+	                                         &lt;expiry&gt;,
+	                                         &lt;url&gt;,
+	                                         &lt;username&gt;,
+	                                         &lt;password&gt;);
+</pre>
+<p>or...</p>
+<pre>
+	ConnectionPool pool = new ConnectionPool(&lt;poolname&gt;,
+	                                         &lt;maxpool&gt;,
+	                                         &lt;maxconn&gt;,
+	                                         &lt;expiry&gt;,
+	                                         &lt;url&gt;,
+	                                         &lt;properties&gt;);
+</pre>
+
+<p>For example, to create a connection pool to access a database using the Oracle &quot;thin&quot; driver you could do something similar to this:</p>
+<pre>
+	String url = &quot;jdbc:oracle:thin:@myDB.myISP.com:1521:test&quot;;
+	ConnectionPool pool = new ConnectionPool(&quot;local&quot;,
+	                                         10,
+	                                         30,
+	                                         180000,  // milliseconds
+	                                         url,
+	                                         &quot;b_lightyear&quot;,
+	                                         &quot;BeyondInfinity&quot;);
+</pre>
+
+<p>To obtain a Connection object from the pool and use it you can now do this:</p>
+<pre>
+	Connection con = null;
+	long timeout = 2000;  // 2 second timeout
+	try
+	{
+	  con = pool.getConnection(timeout);
+	  if (con != null)
+	    <i>...use the connection...</i>
+	  else
+	    <i>...do something else (timeout occurred)...</i>
+	}
+	catch (SQLException sqle)
+	{
+	  <i>...deal with exception...</i>
+	}
+	finally
+	{
+	  try { con.close(); }
+	  catch (SQLException e) { ... }
+	}
+</pre>
+
+<p>Once you are finished with the entire connection pool you should release the resources held by the pool:</p>
+<pre>
+	pool.release();
+</pre>
+
+<p>In addition to this basic use, you can initialize a number of connections within the pool. This is useful on applications startup, for instance, when you would like to create the connections so the first users to access the database don't have to wait for a connection to be created. It is advisable, and it makes the most sense, to do this just after creation of the ConnectionPool object:</p>
+<pre>
+	String url = &quot;jdbc:mysql://localhost:3306/homeDB&quot;;
+	ConnectionPool pool = new ConnectionPool(&quot;local&quot;, 10, 20, 0, url, &quot;Nemo&quot;, &quot;LuckyFin&quot;);
+	pool.init(10);
+</pre>
+
+<p>The example above will initialize all the available connections in the pool. The connections are created in a seperate thread, so that the application can get on with other things while the initialization is performed in the background.</p>
+
+
+<hr size="1">
+
+
+<a name="ConnectionPoolManager"></a><h3>Using the ConnectionPoolManager</h3>
+
+<p>The ConnectionPoolManager provides comprehensive support for external definition of the behaviour of each connection pool, and additionally can manage multiple pools easily. (Better still, it even has integral support for multiple pool managers, allowing you to define pools from multiple sources, but this is seldom required.)</p>
+
+<p>Conceptually a single pool manager provides access to a number of ConnectionPool objects, each of which provides access to a user-specified database source. For each pool manager the user specifies the JDBC drivers required, the log file for output, and the parameters for each connection pool. With this information the pool manager registers the necessary JDBC drivers and creates the pools ready for use. The log file shows a trace of the manager's activity, along with the activity of each of it's pools.</p>
+
+<p>To use a pool manager you first need to obtain an instance of ConnectionPoolManager. This can be done in several different ways depending on your exact requirements, but the two easiest options are:</p>
+<pre>
+	ConnectionPoolManager.getInstance();
+	ConnectionPoolManager.getInstance(File);
+</pre>
+
+<p>The <code>getInstance()</code> method returns an instance defined by the default properties file, which needs to be within the CLASSPATH (or equivalent location for specific host system). The <code>getInstance(File)</code> method returns an instance defined by the file specified. When either of these methods is called it either returns the requested instance immediately (if it already exists), or first creates the pools required and then returns the instance.</p>
+
+<p>It is also possible to define properties using a user-specified file within the CLASSPATH, or even using a Properties object. Each option is explained in the following table:</p>
+<blockquote>
+<table border="1" cellspacing="0" cellpadding="3">
+<tr>
+	<th>Method of Access</th>
+	<th>Explanation</th>
+</tr>
+<tr>
+	<td><code>getInstance()</code>*</td>
+	<td>Returns the pool manager instance as defined by the default properties file (dbpool.properties) which is located in the CLASSPATH (or equivalent location for specific host system)<sup>+</sup>.</td>
+</tr>
+<tr>
+	<td><code>getInstance(String)</code>*</td>
+	<td>Returns the pool manager instance as defined by the properties file with the filename specified, located in the CLASSPATH (or equivalent location for specific host system)<sup>+</sup>.</td>
+</tr>
+<tr>
+	<td><code>getInstance(File)</code>*</td>
+	<td>Returns the pool manager instance as defined by the properties file specified.</td>
+</tr>
+<tr>
+	<td><code>createInstance(Properties)</code> followed by <code>getInstance()</code>*</td>
+	<td>Creates a pool manager instance from the specified Properties object and makes it available via the <code>getInstance()</code> method.</td>
+</tr>
+<tr><td colspan="2">*<i>Note 1: Each of these methods can throw an IOException if there is a problem loading the properties from the file.</td></tr>
+<tr><td colspan="2"><sup>+</sup><i>Note 2: Application servers often specify user-accessible areas differently from the CLASSPATH variable. For example, when used with Apache Tomcat it can be placed in the &lt;webapp&gt;/WEB-INF/classes directory.</td></tr>
+</table>
+</blockquote>
+
+<p><i><b>Important:</b> It is not possible to use both a default properties file instance and a Properties object instance simulteneously. If the default properties file instance is obtained and not released, a call to createInstance(Properties) will fail with a RuntimeException. Aside from this limitation multiple instances of ConnectionPoolManagers can be obtained and used, each with it's own parameters.</i></p>
+
+<p>Using these various instance accessors you have access to a theoretically unlimited number of different pool managers, although in reality using more than just one is rare.</p>
+
+<p>So, to obtain the pool manager defined by the default properties file us:</p>
+<pre>
+	ConnectionPoolManager cpm = null;
+	try
+	{
+		cpm = ConnectionPoolManager.getInstance();
+	}
+	catch (IOException ioe)
+	{
+		...
+	}
+</pre>
+
+<p>This step would normally be done at the initialization stage of an application. For instance, in a web application the pool manager could be created and assigned to an application scope variable, where it could be accessed by other classes which require database access.</p>
+
+<p>Once a reference to a pool manager has been obtained you can now checkout/checkin (obtain/return) connections from/to it's pools. To obtain a connection use the getConnection(&lt;poolname&gt;) method. This method will obtain a database connection if one is immediately available, or return null if not. If you would rather wait a certain amount of time in case a connection becomes available use the getConnection(&lt;poolname&gt;, timeout) instead, where <i>timeout</i> is specified in milliseconds. If a connection becomes available within the timeout the method will return with the connection, otherwise null is returned. Once you have finished with this connection you simply close it as you would a normal connection. On closing the connection it is cleaned up and then returned to the pool for re-use.</p>
+
+<p>For example, the following code obtains a connection from the ConnectionPoolManager, performs some operations, then returns the connection.</p>
+<blockquote><pre>
+	Connection con = null;
+	long timeout = 2000;  // 2 second timeout
+	try
+	{
+	  con = cpm.getConnection(&lt;poolname&gt;, timeout);
+	  if (con != null)
+	    <i>...use the connection...</i>
+	  else
+	    <i>...do something else (timeout occurred)...</i>
+	}
+	catch (SQLException sqle)
+	{
+	  <i>...whatever...</i>
+	}
+	finally
+	{
+	  try { con.close(); }
+	  catch (SQLException e) { ... }
+	}
+</pre></blockquote>
+
+<p>Notice that when you have finished working with a connection you simply call it's close() method as you would normally. Instead of being closed the connection is actually recycled within the pool ready to be used again.</p>
+
+<p>When you have completely finished with all the pools managed by a ConnectionPoolManager object you should release it to ensure all of the resources it is using are released. This is done using the call:</p>
+<blockquote><pre>
+	cpm.release();
+</pre></blockquote>
+
+<p>which if necessary shuts down the pools and releases the resources held by the pool manager.</p>
+
+<h4>Important Notes about ConnectionPoolManager</h4>
+
+<p>Every successful call to one of the getInstance() methods increases an internal counter of the number of clients which hold a reference to that pool manager. A call to release() decrements this client counter. If the counter hits zero then the pool manager shuts down all it's connection pools and cleans up all it's resources. Any database connections referred to by the underlying pools that are still open may be forcibly closed by this operation, which could have undesirable effects. Therefore is it recommended (and good programming practice) to ensure that all your connections are closed when no longer needed.</p>
+
+<p>What this means is that you need to keep a careful track of the references to each pool manager created. Each call to getInstance() should be matched by a call to release() for that pool manager, but it is a good idea to keep a global reference within an application for as long as the database access is required, to avoid unnecessary destruction and new creation of the pool manager.</p>
+
+
+
+
+<a name="properties"></a><h3>Defining the behaviour of the pool</h3>
+
+<p>The behaviour of the pools used by the ConnectionPoolManager is governed by either a properties file (by default called <b>dbpool.properties</b>) or by a Properties object supplied by the user.</p>
+
+<p>The format of the properties file is shown below. The same key/value pairs apply when specifying a pool manager using a Properties object.</p>
+<blockquote><pre>
+	 drivers=&lt;fully-qualified class name of driver&gt;
+	 logfile=&lt;filename&gt;
+
+	 &lt;poolname&gt;.url=&lt;JDBC connection URL for database&gt;
+	 &lt;poolname&gt;.user=&lt;user name&gt;
+	 &lt;poolname&gt;.password=&lt;password&gt;
+	[&lt;poolname&gt;.maxpool=&lt;maximum pooled connections&gt;]
+	[&lt;poolname&gt;.maxconn=&lt;maximum possible connections&gt;]
+	[&lt;poolname&gt;.init=&lt;initial number of connections&gt;]
+	[&lt;poolname&gt;.expiry=&lt;expiry time of connections (seconds)&gt;]
+	[&lt;poolname&gt;.validator=&lt;fully-qualified classname of ConnectionValidator&gt;]
+	[&lt;poolname&gt;.decoder=&lt;fully-qualified classname of PasswordDecoder&gt;]
+	[&lt;poolname&gt;.cache=true/false]
+	[&lt;poolname&gt;.async=true/false]
+	[&lt;poolname&gt;.debug=true/false]
+	[&lt;poolname&gt;.prop.<i>property</i>=<i>value</i>]
+</pre></blockquote>
+
+<p>Those properties in [brackets] are optional and take on default values when not supplied as described in the table below. Inevitably is is worthwhile supplying values for at least <code>maxpool</code> and <code>maxconn</code>, or you will get no benefit from the pooling system.</p>
+
+<blockquote>
+<table border="1" cellspacing="0" cellpadding="3">
+<tr>
+	<th>Property</th>
+	<th>Purpose</th>
+	<th>Possible values</th>
+	<th>Default value</th>
+</tr>
+<tr>
+	<td>maxpool</td>
+	<td>controls the number of connections in the pool</td>
+	<td>integer, >=0</td>
+	<td>0 - no connections pooled</td>
+</tr>
+<tr>
+	<td>maxconn</td>
+	<td>limits the maximum number of connections that can be created</td>
+	<td>integer, >=0</td>
+	<td>0 - unlimited</td>
+</tr>
+<tr>
+	<td>init</td>
+	<td>creates a number of initial connections on startup</td>
+	<td>integer, >=0</td>
+	<td>0 - none</td>
+</tr>
+<tr>
+	<td>expiry</td>
+	<td>allows unused connections in the pool to be closed after a certain time limit (seconds)</td>
+	<td>integer, >=0</td>
+	<td>0 - no expiry</td>
+</tr>
+<tr>
+	<td>validator</td>
+	<td>allows use of a custom connection validation class</td>
+	<td>Java class name</td>
+	<td>none - validates with <code>Connection.isClosed()</code></td>
+</tr>
+<tr>
+	<td>decoder</td>
+	<td>allows use of a custom password decoder class</td>
+	<td>Java class name</td>
+	<td>none - no password encoding supported</td>
+</tr>
+<tr>
+	<td>cache</td>
+	<td>option to turn off caching of statements</td>
+	<td>true/false</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>async</td>
+	<td>option to turn on asynchronous destruction of invalid/dead connections</td>
+	<td>true/false</td>
+	<td>false</td>
+</tr>
+<tr>
+	<td>debug</td>
+	<td>option to turn on debug information in the log file</td>
+	<td>true/false</td>
+	<td>false</td>
+</tr>
+<tr>
+	<td>prop.<i>property</i></td>
+	<td>optional properties to be passed to the JDBC driver</td>
+	<td>string</td>
+	<td>&nbsp;</td>
+</tr>
+</table>
+</blockquote>
+
+<p>You can define more than one pool provided each one has a different pool name. To specify multiple database driver classes simply comma or whitespace separate them. Each driver entry needs to be the fully-qualified class name of a valid JDBC Driver which implements the java.sql.Driver interface.</p>
+
+<p>You can optionally supply additional properties to the JDBC driver by adding <code>&lt;poolname&gt;.prop.<i>property</i>=<i>value</i></code> within the properties file. This allows you to pass values to the driver which otherwise might be passed by adding them to the JDBC URL.</p>
+
+<p>Internal validation of the properties is performed, so if you specify impossible values the pool will default to: no pooled items, unlimited total connections, no expiry. This will behave similarly to not having a pool, so it is worth thinking through the numbers you use. <i>Each of the defaults shown are used to avoid making any assumptions about the needs of any individual circumstance. Each time a pool is setup you should take care to analyse and determine the entries that are likely to perform well in that specific situation.</i></p>
+
+<p>So, for example, the properties for a locally-hosted MySQL database with a pool name of <i>local</i> could be:</p>
+<pre>
+	drivers=com.mysql.jdbc.Driver
+	logfile=dbpool.log
+
+	local.url=jdbc:mysql://localhost:3306/homeDB
+	local.user=Nemo
+	local.password=LuckyFin
+	local.maxpool=10
+	local.maxconn=20
+	local.expiry=0
+</pre>
+
+<p><code>maxpool</code> determines the maximum number of connections that can be held in the pool.<br>
+<code>maxconn</code> determines the absolute maximum number of connections that can be created for use.<br>
+<code>expiry</code> is the expiry time for individual connections (seconds).</p>
+
+<p>These properties determine the behaviour of the pool when in use. The number of connections available for use is dictated by <code>maxpool</code> and <code>maxconn</code>. A maximum of <code>maxpool</code> items are ever held for re-use in the pool, although up to <code>maxconn</code> can be created and handed out, but the surplus connections will be destroyed when handed back. If <code>maxconn</code> is set to zero then an unlimited number of additional connections can be checked out, but the surplus will be destroyed when checked back in.</p>
+
+<p>Depending on the connection demands of your application you will see differing behaviour in the pool. With a low demand only a few connections are likely to ever be created (sometimes fewer than <code>maxpool</code>), whereas with a very high demand you may well stretch the pooling system to it's limits. The likely usage should be carefully taken into consideration when configuring the properties file.</p>
+
+<h4>What this means...</h4>
+<p>You have great flexibility to create connection pools dealing with most situations you are likely to require. For instance, some database drivers only give you a limited number of connections due to either limited resources or licence limitations. In this case you set <code>maxconn</code> at or just below this limit, and establish a convenient <code>maxpool</code> size which deals well with the average load. If you have a high-demand application with a limited number of connections you may simply want to remove the <code>expiry</code> and make the <code>maxpool</code> equal to <code>maxconn</code> which will simply pool all available connections and keep them open; this gives you maximum database connection performance, but may tie up resources on the machine which could be used elsewhere.</p>
+
+<h4>Example...</h4>
+<p>The pool shown above will create new connections as required, up to a maximum of 20 simultaneous connections. When each connection is returned it will only be kept in the pool if there are fewer than 10 already in the pool. Otherwise it will close the returned connection. This occurs because there is no expiry for the pool.</p>
+
+<p>The example below shows the properties file for an Oracle database using the Oracle Thin JDBC driver to access the database called &quot;test&quot;.</p>
+<pre>
+	drivers=oracle.jdbc.driver.OracleDriver
+	logfile=dbpool.log
+
+	local.url=jdbc:oracle:thin:@myDB.myISP.com:1521:test
+	local.user=b_lightyear
+	local.password=BeyondInfinity
+	local.maxpool=10
+	local.maxconn=30
+	local.expiry=180
+	local.validator=snaq.db.AutoCommitValidator
+</pre>
+<p>In this case there is a maximum limit on the number of connections as might be the case when using an ISP-hosted database server. To save resources and to avoid compromising performance the pool is only 10 connections in size. When demand is high the pool size is able to expand up to 30, and when demand is low, connections will expire after three minutes of idleness (180 seconds). This example also makes use of more rigorous connection validation (for more information see the <a href="#Advanced">Advanced section</a>).</p>
+
+
+<hr size="1">
+
+
+<a name="Choosing"></a><h3>Choosing Pooling Parameters</h3>
+
+<p>One difficult aspect of using a connection pooling system is figuring out what parameters to use to get the best out of it. This is not surprising, as it dependent on many factors: the application (and it's code efficiency), the database drivers, the database application, the database platform, etc. All these variables (and more besides) lead to the inevitability that choosing good parameters is a matter of trial and error; there is no absolute way of knowing what is best without trying out a few ideas. Try to step back from the details of the code that has been written and view the application as a whole.</p>
+
+<p>By answering some of the questions below they may assist you in coming to more useful values for the parameters in question. Bear in mind that you can turn on the debug option for each pool to see more detailed usage information in the log. This helps determine whether the behaviour is appropriate to the circumstances, and is highly recommended during development. Be aware that enabling debug can be detrimental to performance, so remember to disable it again for production releases.</p>
+
+<p>General questions to think about:</p>
+<ul>
+<li>Are database accesses generally quick, or do they take a long time?
+<li>Are database accesses generally frequent or infrequent?
+<li>Are there any database accesses which obviously take a long time to complete?
+</ul>
+
+<p>If your application only occasionally requires access to a database then it's possible you don't even need connection pooling. However, it might still be able to provide a convenient mechanism for providing access to the database. Additionally, if the system is likely to be up-scaled you will need to think of the future implications in terms of database access.</p>
+
+<p>Issues that may affect the likely value for <code>maxpool</code>:</p>
+<ul>
+<li>How much connection demand is there under normal use? ...and under heavy use?
+<li>Are connections usually used for a long time, or only quickly?
+</ul>
+
+<p>Issues that affect the likely value for <code>maxconn</code>:</p>
+<ul>
+<li>Is there a limit on the number of connections imposed by the JDBC driver (either code or licence)?
+<li>Does the database have resource limitations so only a certain number of connections can be used simultaneously?
+<li>Are there other system limitations (memory, processor, etc.) that restrict connection creation (or creation efficiency)?
+</ul>
+
+<p>Issues that affect the likely value for <code>expiry</code>:</p>
+<ul>
+<li>Does the database automatically close connections after a certain period of inactivity?
+<li>Is this behaviour an option which can be switched off?
+<li>Are the connections reliable over long periods of inactivity (hidden resource use, memory leaks, etc.)?
+<li>How much connection demand is there under normal use? ...and under heavy use?
+</ul>
+
+<p>Issues that may affect whether to use statement caching:</p>
+<ul>
+<li>Does the application frequently issue the same queries to the database (Prepared/CallableStatements)?
+<li>Does the application make use of user-specified Statements (ie. ResultSet type, concurrency settings, etc.)?
+</ul>
+
+<p>Issues that may affect whether/how to use custom connection validation:</p>
+<ul>
+<li>Do you frequently find connections in an invalid state after a while?
+<li>Do you need to validate connections, but the database doesn't support the auto-commit feature?
+</ul>
+
+<p>By looking at the system as a whole and trying to determine it's database access behaviour you can try to understand the most likely useful values for these parameters. Try them out to see if they give a performance boost. Try adjusting them a bit and seeing what effect this has on the performance. You may find adding timing and/or pool analysis code to the application helps achieve better performance. To achieve this the pooling system has methods to discover connection &quot;hit rate&quot;, the pool parameters, and information about the number of connections held, both available and in-use.</p>
+
+
+<hr size="1">
+
+
+<a name="Advanced"></a><h3>Advanced Features</h3>
+
+<h4>Connection Validation</h4>
+<p>Each time a connection is requested from a pool it is checked for validity prior to being handed out. By default this check is done using the <code>isClosed()</code> method of the connection object. Although this method is relatively quick to return, it is not 100% reliable as it only returns whether the <code>close()</code> method has explicitly been called (the connection may have become invalid another way). You can override this default connection validation by using a custom validation class. The simplest way of making the validation more rigorous is to use the supplied <code>snaq.db.AutoCommitValidator class</code>.</p>
+
+<p>The <code>AutoCommitValidator</code> class has been provided as a convenience to perform connection validation using the standard SQL call <code>setAutoCommit(true)</code> which should determine whether the connection can be used without problems, provided your JDBC database driver supports this feature. However, you can write your own validation classes as required by implementing the <code>ConnectionValidator</code> interface and specifying the class name in the properties file.</p>
+
+<p>If using a standalone ConnectionPool call the setValidator(ConnectionValidator) method. If using the pool manager include this line (key/value pair) in your properties:</p>
+<pre>
+	&lt;poolname&gt;.validator=snaq.db.AutoCommitValidator
+</pre>
+
+<p>Bear in mind that you will need to find a practical balance between the rigorousness of the validation and the performance of the application. To obtain an (almost) error-proof validation you may wish to provide a class which performs full queries on the database to determine if it's operational. Sometimes this is necessary to provide the best quality service, but it might also impact performance if the connection needs to be tested in this way each time it is requested from the pool. However, it is also worth noting that some database/driver combinations can operate in a strange way if the validation is not rigorous enough, due to connections being closed unexpectedly and the validation routine not identifying the closure. The likelihood of this is liable to increase when using non-Type-4 JDBC drivers which use native code instead of being pure Java. If in doubt write connection validators that are more rigorous than required, then reduce the strength later to enhance speed performance and assess the situation. If necessary enable debugging information to obtain more information about the functioning of the pool.</p>
+
+<h4>Disabling statement caching</h4>
+<p>Caching of Statement objects is provided for by the pooling system by using a connection wrapper class (Statements created with a user-specified ResultSet type and concurrency are not cached; only the default statements are cached). In the event of using DBPool in a system where caching is not required you can disable the caching by adding the following to the properties file:</p>
+<pre>
+	&lt;poolname&gt;.cache=false
+</pre>
+<p>or by directly disabling caching on a standalone pool by calling one of the <code>setCaching(...)</code> methods.</p>
+
+<h4>Password Encryption</h4>
+<p>Connection pools are usually setup using the text-based properties file, which contains a plaintext password. Should the security of the machine hosting this properties file be compromised this allows the plaintext password to become available, which in turn compromises the security of the database server. To deal with this users can create a class which implements the PasswordDecoder interface, which has a one method signature:</p>
+<pre>
+	char[] decode(String encoded);
+</pre>
+
+<p>A very simple example PasswordDecoder (snaq.db.RotDecoder) has been provided which performs simple Rot13-encoding. This algorithm is very insecure and is only provided as an example implementation for demonstration purposes.</p>
+
+<p>Once you have implemented your PasswordDecoder class, if using a standalone ConnectionPool call the setPasswordDecoder(PasswordDecoder) method, or if using the pool manager include this line (key/value pair) in your properties:</p>
+<pre>
+	&lt;poolname&gt;.decoder=&lt;full-qualified classname&gt;
+</pre>
+
+<p>Note: this mechanism only allows for implementation of password-based key systems, and while it is not as potentially secure as key-pair encryption, it does dramatically enhance security.</p>
+
+<p>Bear in mind that you will need to find a practical balance between the rigorousness of the validation and the performance of the application. To obtain an (almost) error-proof validation you may wish to provide a class which performs full queries on the database to determine if it's operational. Sometimes this is necessary to provide the best quality service, but it might also impact performance if the connection needs to be tested in this way each time it is requested from the pool. However, it is also worth noting that some database/driver combinations can operate in a strange way if the validation is not rigorous enough, due to connections being closed unexpectedly and the validation routine not identifying the closure. The likelihood of this is liable to increase when using non-Type-4 JDBC drivers which use native code instead of being pure Java. If in doubt write connection validators that are more rigorous than required, then reduce the strength later to enhance speed performance and assess the situation. If necessary enable debugging information to obtain more information about the functioning of the pool.</p>
+
+<h4>Asynchronous connection destruction</h4>
+<p>Sometimes you will come across situations where the destruction of a database connection takes a disproportionate length of time. This could occur because the connections regularly get into an unstable state for some reason, or simply that the nature of the system being used means that many other resources need to be cleaned up as well. This situation can be indicative of a more serious instability (worth considering more rigorous connection validation), but there are some occasions when this is simply unavoidable. To ensure that pooling performance is not affected when this occurs you can turn on this option to perform the connection destruction asynchronously, thereby returning control immediately and not tying up the pool unnecessarily. It is recommended (and the default setting) that you leave this option disabled unless you are sure you need it. To enable this option add this line to the properties file:</p>
+<pre>
+	&lt;poolname&gt;.async=true
+</pre>
+<p>or call <code>setAsyncDestroy(true)</code> on a ConnectionPool instance.</p>
+
+<h4>Asynchronous/forced pool release</h4>
+<p>You can make a connection pool release it's resources asynchronously by calling the <code>releaseAsync()</code> method instead of the <code>release()</code> method when finished with a pool. This will return immediately and perform the pool cleanup in a background thread. This can be useful if the application continues after it has finished using the pool, but you don't want the application to have to wait for all the resources of the pool to be released, which in some circumstances can take a while.</p>
+
+<p>You can force a connection pool to be released by using the <code>releaseForcibly()</code> method. Any open connections which have not been returned to the pool will be forcibly closed using this method. This method of release can sometimes be useful when the pool has been used to hand out connections to third party code where it is unreliable whether or not all connections will be returned, and an application termination is required. Bear in mind that forcibly closing connections can sometimes lead to unpredictable results in terms of database contents.</p>
+
+<p><i>Note: When using the ConnectionPoolManager calling release() performs the release synchronously and forcibly, so it is wise to ensure all connections from the underlying pools have been finished with and closed.</i></p>
+
+<h4>Pool Listeners</h4>
+<p>Sometimes it's useful to have code be able react to the current state of a connection pool. For this reason ConnectionPool objects can issue events about their activity to objects which have registered interest. Listener objects must implement the ConnectionPoolEventListener interface, and can register/deregister their interest by using the provided methods:</p>
+<pre>
+	addConnectionPoolListener(ConnectionPoolListener)
+	removeConnectionPoolListener(ConnectionPoolListener)
+</pre>
+<p>Also provided for convenience is the ConnectionPoolEventAdapter class, which provides null implementations of all the methods in the ConnectionPoolEventListener interface.</p>
+<p>The events triggered are as follows:</p>
+<blockquote>
+<table border="1" cellspacing="0" cellpadding="3">
+<tr>
+	<th>Event Identifier</th>
+	<th>Description</th>
+</tr>
+<tr>
+	<td><code>CHECKOUT</code></td>
+	<td>Fired just before a valid connection is handed back to a checkOut(...) request.</td>
+</tr>
+<tr>
+	<td><code>CHECKIN</code></td>
+	<td>Fired when a connection is handed back with a checkIn(...) call.</td>
+</tr>
+<tr>
+	<td><code>MAX_POOL_LIMIT_REACHED</code></td>
+	<td>Fired when a check-out request causes the pooling limit (maxpool) to be reached.</td>
+</tr>
+<tr>
+	<td><code>MAX_POOL_LIMIT_EXCEEDED</code></td>
+	<td>Fired when a check-out request causes the pooling limit (maxpool) to be exceeded.</td>
+</tr>
+<tr>
+	<td><code>MAX_SIZE_LIMIT_REACHED</code></td>
+	<td>Fired when a check-out request causes the pool's maximum size limit (maxconn) to be reached.</td>
+</tr>
+<tr>
+	<td><code>MAX_SIZE_LIMIT_ERROR</code></td>
+	<td>Fired when a check-out request is made but the pool's maximum size limit (maxconn) has been reached.</td>
+</tr>
+<tr>
+	<td><code>VALIDATION_ERROR</code></td>
+	<td>Fired when a connection cannot be validated (when the isValid(...) method call fails).</td>
+</tr>
+<tr>
+	<td><code>PARAMETERS_CHANGED</code></td>
+	<td>Fired when the pool's parameters have been changed.</td>
+</tr>
+<tr>
+	<td><code>POOL_RELEASED</code></td>
+	<td>Fired when a pool has been released. No more events are fired following this one, as all listeners are deregistered automatically.</td>
+</tr>
+</table>
+</blockquote>
+<p>The event notification is synchronous, therefore registered listeners should make sure that code executed in their event-handling methods is executed quickly. Code that requires more time should spawn a separate thread to avoid disrupting the pooling mechanism.</p>
+
+
+<h4>Debugging</h4>
+<p>There is an extra property that can be set to allow more detailed debug information about the pooling mechanism to be output to the log file. To enable this add the following property:</p>
+<pre>
+	&lt;poolname&gt;.debug=true
+</pre>
+
+<p>or invoke the <code>setDebug(true)</code> method on a ConnectionPool instance.<br> <i>Note, this is for debugging purposes only, and in a deployment environment it is likely to impact performance.</i></p>
+
+
+<hr size="1">
+
+
+<a name="Notes"></a><h3>Notes &amp; Troubleshooting</h3>
+
+<h4>CLASSPATH problems? Unable to find properties file?</h4>
+<p>With some application servers the CLASSPATH variable is less than obvious. Due to the need for segregation of both resources and security policies they very often use separate classloaders which only permit loading of classes and resources from specific locations. Not surprisingly this is vendor-specific, and the only way to really get to grips with the problem is to thoroughly read the documentation provided with the application server. If it helps to diagnose the problem the pool manager uses the following syntax to obtain a locate the properties file:</p>
+<pre>
+	ConnectionPoolManager.class.getResourceAsStream(filename)
+</pre>
+<p>where <code>filename</code> is prepended with a &quot;/&quot; character to ensure it is accessed directly. The default properties file is therefore accessed using the call: <code>Class.getResourceAsStream(&quot;/dbpool.properties&quot;)</code>. Bear in mind that different classloaders provided by vendors may well not conform to the standard resource-finding mechanism as used by the system classloader, but this should help in tracking down problems.</p>
+
+<p>Alternatively you can simply use one of the other methods of specifying properties to the ConnectionPoolManager, either referencing a specific file, or passing a Properties object. See the <a href="#ConnectionPoolManager">ConnectionPoolManager</a> section for more details.</p>
+
+<h4>Connection Creation</h4>
+<p>This is how the connection pool tries to establish new database connections:</p>
+<pre><ol>
+<li>if Properties object used
+<li>    use <code>DriverManager.getConnection(url, properties)</code>
+<li>else if username specified
+<li>    use <code>DriverManager.getConnection(url, username, password)</code>
+<li>    if this fails
+<li>        use <code>DriverManager.getConnection(url)</code>
+<li>else
+<li>    use <code>DriverManager.getConnection(url)</code>
+</ol></pre>
+
+<p>This pseudo-code may help debug certain problems when using the pooling system.</p>
+
+
+
+<hr size="1">
+
+
+<a name="Changes"></a><h3>Latest Changes</h3>
+
+<table border="1" cellspacing="0" cellpadding="3">
+<tr><td>22/12/2004<br>(v4.7.1)</td><td><ul>
+	<li>Bug fix to ObjectPool hit rate counting.
+	<li>Bug fix to ConnectionPoolManager's logging mechanism. (Note: logging on new standalone ConnectionPools is now off by default, and should be enabled using one of the setLog() methods if required.)
+</ul></td></tr>
+<tr><td>14/12/2004<br>(v4.7)</td><td><ul>
+	<li>Bug fix for CacheConnection statement caching which prevented correct disabling of caching.
+	<li>Changed logging in ConnectionPoolManager to support PrintStream instead of PrintWriter for more generalized stream support.
+	<li>Added support for pool event listeners.
+	<li>Added support for encoding of passwords in properties files.
+</ul></td></tr>
+<tr><td>06/10/2004<br>(v4.6.2)</td><td><ul>
+	<li>Updates to ConnectionPoolManager to allow more flexibility in specifying properties for initialization.
+	<li>Bug fix to ensure statements are released correctly if statement caching is disabled on a connection after initialization.
+	<li>Bug fix for connection creation which set statement caching based only on normal statements.
+	<li>Finally added versioning to make life easier for everyone!
+	<li>Changes and clarifications to documentation.
+</ul></td></tr>
+<tr><td>12/07/2004<br>(v4.6.1)</td><td><ul>
+	<li>Bug fix for previous release which caused slowdown with large pool expiry values.
+</ul></td></tr>
+<tr><td>08/07/2004<br>(v4.6)</td><td><ul>
+	<li>Several access-level changes to clarify recommended use of ObjectPool.
+	<li>Better check-in logic to avoid unnecessary disposal of some items
+	<li>Addition on connection validation at connection creation
+	<li>Removed redundant PoolSystem interface (it was allowing incorrect use of freeConnection(); only required to solve circularity in compilation, so now when compiling from source all files should be compiled at once)
+	<li>Overhaul of pool synchronization mechanism in response to several more reported deadlock situations
+</ul></td></tr>
+<tr><td>02/06/2004<br>(v4.5.5)</td><td><ul>
+	<li>Minor adjustments to multithreading of cleaner thread causing possible deadlock in some circumstances.
+</ul></td></tr>
+<tr><td>11/05/2004<br>(v4.5.4)</td><td><ul>
+	<li>Fixed a bug with connection initialization in new pools (sometimes causing deadlock).
+	<li>Fixed a small problem with exception generation when problems encountered getting connections.
+</ul></td></tr>
+<tr><td>21/04/2004<br>(v4.5.3)</td><td><ul>
+	<li>Fixed a synchronization bug in ObjectPool code.
+	<li>Fixed a minor ConnectionPoolManager bug relating to reading a null validator from the properties file.
+</ul></td></tr>
+<tr><td>07/04/2004<br>(v4.5.2)</td><td><ul>
+	<li>Fixed a synchronization bug in ObjectPool.Cleaner which sometimes caused hangups on returned connections.
+	<li>Fixed bug in ObjectPool checkOut method to more reliably return valid connections.
+</ul></td></tr>
+</table>
+<br>
+
+
+
+<!-- End main page here  -->
+
+<hr size="1">
+</td></tr></table>
+</div>
+</body>
+</html>

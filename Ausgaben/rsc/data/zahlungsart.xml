@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kategorie-liste>
+
+  <zahlungsart id="bar">
+    <name>bar</name>
+    <beschreibung />
+  </zahlungsart>
+    
+  <zahlungsart id="dauerauftrag">
+    <name>per Dauerauftrag</name>
+    <beschreibung />
+  </zahlungsart>
+
+  <zahlungsart id="ec">
+    <name>per EC-Karte</name>
+    <beschreibung />
+  </zahlungsart>
+  
+  <zahlungsart id="kreditkarte">
+    <name>per Kreditkarte</name>
+    <beschreibung />
+  </zahlungsart>
+  
+  <zahlungsart id="lastschrift">
+    <name>per Lastschrift</name>
+    <beschreibung />
+  </zahlungsart>
+  
+  <zahlungsart id="ueberweisung">
+    <name>per Überweisung</name>
+    <beschreibung />
+  </zahlungsart>
+  
+</kategorie-liste>

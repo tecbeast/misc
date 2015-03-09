@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry sourcepath="lib/src/commons-httpclient-3.0.1-src.zip" kind="lib" path="lib/commons-httpclient-3.0.1.jar"/>
+	<classpathentry sourcepath="lib/src/commons-logging-1.1-src.zip" kind="lib" path="lib/commons-logging-1.1.jar"/>
+	<classpathentry sourcepath="lib/src/commons-codec-1.3-src.zip" kind="lib" path="lib/commons-codec-1.3.jar"/>
+	<classpathentry sourcepath="lib/src/commons-net-1.4.1-src.zip" kind="lib" path="lib/commons-net-1.4.1.jar"/>
+	<classpathentry sourcepath="lib/src/jakarta-oro-2.0.8-src.zip" kind="lib" path="lib/jakarta-oro-2.0.8.jar"/>
+	<classpathentry kind="output" path="classes"/>
+</classpath>

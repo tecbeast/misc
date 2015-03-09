@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<project name="GroFaFoFumbblHarvester" default="build" basedir=".">
+
+	<target name="init">
+		<property name="src.dir" value="src" />
+		<property name="bin.dir" value="bin" />
+		<property name="jar.file" value="${bin.dir}/${ant.project.name}.jar" />
+        <property name="lib.dir" value="lib" />
+        <property name="main.class" value="de.seipler.games.bloodbowl.fumbbl.grofafo.GroFaFoFumbblHarvester" />
+        <path id="classpath">
+            <fileset dir="${lib.dir}" includes="*.jar" />
+        </path>     
+        <property name="classpath" refid="classpath" />
+	</target>
+	
+	<target name="prepare" depends="init">
+		<mkdir dir="${bin.dir}" />
+	</target>
+
+	<target name="clean" depends="init">
+		<delete dir="${bin.dir}" />
+	</target>
+	
+	<target name="compile" depends="prepare">
+		<javac srcdir="${src.dir}" destdir="${bin.dir}" classpath="${classpath}" />
+	</target>
+
+	<target name="jar" depends="compile">
+        <jar destfile="${jar.file}">
+            <manifest>
+              <attribute name="Built-By" value="Georg Seipler" />
+              <attribute name="Main-Class" value="${main.class}" />
+            </manifest>
+            <fileset dir="${bin.dir}" includes="**/*.class" />
+            <zipgroupfileset dir="${lib.dir}" includes="*.jar" />
+        </jar>
+	</target>
+	
+    <!--
+	<target name="sign" depends="jar">
+		<signjar alias="georg" jar="${jar.file}" storepass="keystore"/>
+	</target>
+    -->
+	
+    <target name="build">
+        <antcall target="compile" />
+        <antcall target="jar" />
+    </target>
+
+    <target name="buildClean">
+        <antcall target="clean" />
+        <antcall target="build" />
+    </target>
+
+</project>

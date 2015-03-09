@@ -1,0 +1,100 @@
+22/12/2004 (v4.7.1)
+	Bug fix to ObjectPool hit rate counting.
+	Bug fix to ConnectionPoolManager's logging mechanism. (Note: logging on new standalone ConnectionPools is now off by default, and should be enabled using one of the setLog() methods if required.)
+
+14/12/2004 (v4.7)
+	Bug fix for CacheConnection statement caching which prevented correct disabling of caching (thanks to Peter Van Caeseele).
+	Changed logging in ConnectionPoolManager to support PrintStream instead of PrintWriter for more generalized stream support.
+	Added support for pool event listeners.
+	Added support for encoding of passwords in properties files.
+
+06/10/2004 (v4.6.2)
+	Updates to ConnectionPoolManager to allow more flexibility in specifying properties for initialization.
+	Bug fix to ensure statements are released correctly if statement caching is disabled on a connection after initialization.
+	Bug fix for connection creation which set statement caching based only on normal statements (thanks to Peter Van Caeseele).
+	Finally added versioning to make life easier for everyone!
+	Changes and clarifications to documentation.
+
+12/07/2004 (v4.6.1)
+	Bug fix for previous release which caused slowdown with large pool expiry values.
+
+08/07/2004 (v4.6)
+	Several access-level changes to clarify recommended use of ObjectPool
+	Better check-in logic to avoid unnecessary disposal of some items
+	Addition on connection validation at connection creation
+	Removed redundant PoolSystem interface (it was allowing incorrect use of freeConnection(); only required to solve circularity in compilation, so now when compiling from source all files should be compiled at once)
+	Overhaul of pool synchronization mechanism in response to several more reported deadlock situations
+
+02/06/2004 (v4.5.5)
+	Minor adjustments to multithreading of cleaner thread causing possible deadlock in some circumstances.
+
+11/05/2004 (v4.5.4)
+	Fixed a bug with connection initialization in new pools (sometimes causing deadlock).
+	Fixed a small problem with exception generation when problems encountered getting connections.
+
+21/04/2004 (v4.5.3)
+	Fixed a synchronization bug in ObjectPool code (thanks to Eric Gilbert).
+	Fixed a minor ConnectionPoolManager bug relating to reading a null validator from the properties file.
+
+07/04/2004 (v4.5.2)
+	Fixed a synchronization bug in ObjectPool.Cleaner which sometimes caused hangups on returned connections.
+	Fixed bug in ObjectPool checkOut method to more reliably return valid connections (thanks to Csaba Kertész).
+
+18/10/2003 (v4.5.1)
+	Updated ObjectPool code: more rigorous type-checking, and ability to specify user-definable List type for pool.
+	Fixed bug in CacheConnection handling of cached statements.
+
+15/10/2003 (v4.5)
+	Changed pooling spec. to increase clarity - all connections over maxpool limit are destroyed when returned.
+	Changed check frequency of ObjectPool's cleaner thread (allows quicker release if expiry set high), and added prevention of unnecessary cleaning when pool is inactive.
+	Implemented caching of normal Statements in addition to PreparedStatements and CallableStatements.
+	Added option to pass other properties to JDBC driver through properties file instead of in JDBC URL.
+	Added method to change pool parameters.
+	Changed ConnectionPoolManager to forcibly release pools when finished (provides guaranteed termination).
+	Fixed bug in ConnectionPool.checkOut() methods which was throwing ClassCastExceptions.
+	Changed ConnectionPool constructor to millisecond expiry time to be consistent with ObjectPool constructor.
+	Changed initSize parameter to init for consistency.
+available.
+	Changed ConnectionPool constructor to millisecond expiry time to be consistent with ObjectPool constructor.
+	Changed initSize parameter to init for consistency.
+
+26/09/2003 (v4.4)
+	Changed ObjectPool to check items better when they are returned to the pool.
+	Added check to avoid another attempt to close statements if they are closed before connection.
+	Pooling system modified to track checked out items better, helping cleanup.
+
+08/09/2003 (v4.3.1)
+	Fixed bug in method which populates pool with open connections to avoid a possible endless loop - initConnections(num).
+
+17/03/2003 (v4.3)
+	Addition of more rigorous cleanup code for connections returning to pool.
+
+06/02/2003
+	Version provided for those still using JDBC2.0 platforms.
+
+04/02/2003 (v4.22)
+	Changed ConnectionPool to use seconds for expiry in constructor for conformity.
+	Fixed bug introduced to pool manager constructor code when multiple pool managers support added.
+
+30/01/2003 (v4.21)
+	Fixed bug in ObjectPool checkOut(timeout) code which was returning null connections.
+
+10/01/2003 (v4.2)
+	Added multiple pool manager support with user-specified properties files (backward-compatible).
+
+12/12/2002 (v4.1)
+	Asynchronous object destruction and pool release mechanisms added to ObjectPool, and support added to ConnectionPoolManager.
+	Added interface to avoid compilation circularity between ConnectionPool and CacheConnection classes.
+
+08/10/2002
+	Source code made available for download.
+
+25/04/2002 (v4.0)
+	Support for new v1.4 java.sql interfaces, and package name change from slink.* to snaq.* to reflect new domain hosting.
+
+19/02/2002 (v3.2)
+	Changed ObjectPool statistical methods to public, and removed final modifier on ConnectionPool.
+
+14/02/2002 (v3.1)
+	Code added to perform better cleanup of PreparedStatements and CallableStatements that were cached when a Connection returned to a pool.
+	The properties file has now been changed to &quot;dbpool.properties&quot; to address an incompatibility with JBoss configuration files.

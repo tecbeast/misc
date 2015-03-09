@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XML Spy v4.0.1 U (http://www.xmlspy.com) by Dresdner Bank AG (Dresdner Bank AG) -->
+<glossary xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="C:\eclipse\workspace\ContentManagementSystem\Requirements\glossary.xsd">
+	<term>
+		<name>physical directory</name>
+		<descr>The physical directory is part of the file system that contains files and directories.</descr>
+		<pseudonyms>
+			<pseudonym>folder</pseudonym>
+			<pseudonym>directory</pseudonym>
+		</pseudonyms>
+		<germanName>Dateisystemordner</germanName>
+		<germanDescr/>
+		<germanPseudonym/>
+	</term>
+	<term>
+		<name>file</name>
+		<descr>File of the file system. Any kind of file is possible: Mircosoft Word, Excel, PowerPoint, Text, PDF, mp3, vob, and links to other documents, web pages, etc.</descr>
+		<pseudonyms>
+			<pseudonym>physical document</pseudonym>
+		</pseudonyms>
+		<germanPseudonym/>
+	</term>
+	<term>
+		<name>zip directory</name>
+		<descr>Any type of supported compress or uncompressed archives.</descr>
+		<germanPseudonym/>
+	</term>
+	<term>
+		<name>descriptor inheritance</name>
+		<descr>A description of a physical directory is used for all documents and physical directories contained in it. Inheritance is just used if none of the included documents or physical directories have a descriptor.</descr>
+		<germanPseudonym/>
+	</term>
+	<term>
+		<name>shadow file</name>
+		<descr>Document that is part of a global document archive and is not deployed to the current distributed archive.</descr>
+		<pseudonyms>
+			<pseudonym>shadow document</pseudonym>
+		</pseudonyms>
+		<germanPseudonym/>
+	</term>
+	<term>
+		<name>file descriptor</name>
+		<descr>Describes the associated file.</descr>
+		<pseudonyms>
+			<pseudonym>document descriptor</pseudonym>
+		</pseudonyms>
+		<germanPseudonym/>
+	</term>
+	<term>
+		<name>directory descriptor</name>
+		<descr>Describes the associated directory.</descr>
+		<germanPseudonym/>
+	</term>
+	<term>
+		<name>shadow descriptor</name>
+		<descr>Describes the associated file or directory. The directory or file is not part of the current deployed archive.</descr>
+		<germanPseudonym/>
+	</term>
+	<term>
+		<name>de-central descriptors</name>
+		<descr/>
+		<germanPseudonym/>
+	</term>
+	<term>
+		<name>file deployment</name>
+		<descr>Process of exporting files and directories from the global archive.</descr>
+		<pseudonyms>
+			<pseudonym>document deployment</pseudonym>
+		</pseudonyms>
+		<germanPseudonym/>
+	</term>
+	<term>
+		<name>associated file</name>
+		<descr>physical file that is described by a file descriptor.</descr>
+		<pseudonyms>
+			<pseudonym>associated document</pseudonym>
+		</pseudonyms>
+		<germanPseudonym/>
+	</term>
+	<term>
+		<name>associated directory</name>
+		<descr>physical directory of the file system that is described by a directory descriptor.</descr>
+		<germanPseudonym/>
+	</term>
+	<term>
+		<name>category directory</name>
+		<descr>Logical directory that is not part of the file system. The category directory is a logical categorization which is defined using a category path.</descr>
+		<pseudonyms>
+			<pseudonym>category path</pseudonym>
+		</pseudonyms>
+		<germanPseudonym/>
+	</term>
+	<term>
+		<name>category directory descriptor</name>
+		<descr>Description of a logical category directory.</descr>
+		<pseudonyms>
+			<pseudonym>category path descriptor</pseudonym>
+		</pseudonyms>
+		<germanPseudonym/>
+	</term>
+	<term>
+		<name>physical view</name>
+		<descr>View of the files and directories within the file system.</descr>
+		<germanPseudonym/>
+	</term>
+	<term>
+		<name>logical view</name>
+		<descr>View of the hierachially structure defined by category paths.</descr>
+		<germanPseudonym/>
+	</term>
+	<term>
+		<name>favorites</name>
+		<descr/>
+	</term>
+	<term>
+		<name>descriptor archive</name>
+		<descr>Directory or ZIP file that contains the descriptors of all files included within the physical directory and a descriptor of the physical dierectory itself.</descr>
+	</term>
+	<term>
+		<name>global archive</name>
+		<descr>Archive that includes all document. It could be a virtually global archive that consists of several distributed archives.</descr>
+	</term>
+	<term>
+		<name>distributed archive</name>
+		<descr>A part or a complete part of a global archive.</descr>
+	</term>
+</glossary>

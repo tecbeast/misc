@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<anbieter-liste>
+
+  <anbieter id="real_gerlingen">
+    <name>Real Gerlingen</name>
+    <beschreibung>Real Markt in Gerlingen</beschreibung>
+  </anbieter>
+  
+  <anbieter id="schlecker_dizingen">
+    <name>Schlecker Ditzingen</name>
+    <beschreibung>Schlecker in Ditzingen</beschreibung>
+  </anbieter>
+  
+</anbieter-liste>

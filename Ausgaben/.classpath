@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="test"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/DBPool-4.7.1.jar" sourcepath="lib/src/DBPool-4.7.1-src.zip"/>
+	<classpathentry kind="lib" path="lib/hsqldb-1.8.0.jar" sourcepath="lib/src/hsqldb-1.8.0-src.zip"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

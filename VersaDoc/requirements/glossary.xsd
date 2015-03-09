@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XML Spy v4.0.1 U (http://www.xmlspy.com) by Dresdner Bank AG (Dresdner Bank AG) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:element name="glossary">
+		<xs:annotation>
+			<xs:documentation>glossary of all terms used within the project.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="term" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="name" type="xs:string"/>
+							<xs:element name="descr" type="xs:string"/>
+							<xs:element name="pseudonyms" minOccurs="0">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="pseudonym" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="germanName" type="xs:string" minOccurs="0"/>
+							<xs:element name="germanDescr" type="xs:string" minOccurs="0"/>
+							<xs:element name="germanPseudonym" minOccurs="0">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="germanPseudonym" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

@@ -1,0 +1,27 @@
+
+(I) Usability
+
++ show directories within tree
++ show files within table
+- show file properties (size, modification date, etc within a standarized dialog)
+- rename, move, copy of physical files with drag-and-drop (within application and from explorer)
+- delete physical files
+- update button in order to initiate re-scanning od physical files
+- preparation and execution of the commandos are visualised (progress bar and execution time in millseconds)
+- set file system location
+- show zipped files as directories
+
++ show logical folders within tree
++ show logical documents within table
+- set workspace for scanning
+- show file properties (document description, owner, size, modification date etc. within a standarized dialog)
+- rename, move, copy, delete, of physical files with drag-and-drop
+- create new categories 
+- rename, move, copy, delete associated physical directory/file and vice versa 
+
+(II) Test Equipment
+
++ prepare test file system with defined depth and width
+(+) create logical document archives ==> used to create a logical file system
+
+(III) Serialize/Deserialize Logical File System

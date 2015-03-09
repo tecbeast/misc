@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kaeufer-liste>
+
+  <kaeufer id="georg">
+    <name>Georg</name>
+    <beschreibung>Georg Seipler</beschreibung>
+  </kaeufer>
+  
+  <kaeufer id="sabine">
+    <name>Sabine</name>
+    <beschreibung>Sabine Seipler</beschreibung>
+  </kaeufer>
+  
+</kaeufer-liste>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kategorie-liste>
+
+  <kategorie id="auto">
+    <name>Auto</name>
+    <beschreibung />
+  </kategorie>
+  
+  <kategorie id="kleidung">
+    <name>Kleidung</name>
+    <beschreibung />
+  </kategorie>
+  
+  <kategorie id="lebensmittel">
+    <name>Lebensmittel</name>
+    <beschreibung />
+  </kategorie>
+  
+</kategorie-liste>

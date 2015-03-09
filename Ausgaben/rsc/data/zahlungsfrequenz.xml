@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kategorie-liste>
+
+  <zahlungsfrequenz id="jaehrlich">
+    <name>jährlich</name>
+    <beschreibung />
+  </zahlungsfrequenz>
+  
+  <zahlungsfrequenz id="monatlich">
+    <name>monatlich</name>
+    <beschreibung />
+  </zahlungsfrequenz>
+  
+  <zahlungsfrequenz id="vierteljaehrlich">
+    <name>vierteljährlich</name>
+    <beschreibung />
+  </zahlungsfrequenz>
+  
+  <zahlungsfrequenz id="woechentlich">
+    <name>wöchentlich</name>
+    <beschreibung />
+  </zahlungsfrequenz>
+  
+</kategorie-liste>

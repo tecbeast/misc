@@ -1,0 +1,57 @@
+body, th, td, ul, ol, blockquote {
+	font-family : Verdana, Geneva, Arial, Helvetica, sans-serif;
+	color : black;
+	font-size : xx-small;
+}
+
+td {
+	vertical-align: top;
+}
+
+code, pre {
+	font-family : monospace;
+	font : larger;
+}
+
+a {
+	text-decoration: underline;
+	color: #006030;
+	font-weight : bolder;
+}
+
+h1 {
+	color: #000080;
+	font-size : small;
+	text-align : center;
+}
+
+h2 {
+	color: #000080;
+	font-size : x-small;
+}
+
+h3 {
+	color: #000080;
+	font-size : xx-small;
+}
+
+h4 {
+	color: #000080;
+	font-size : xx-small;
+	font-weight : lighter;
+}
+
+.bold {
+	font-weight: bold;
+}
+
+.title {
+	font-weight: bold;
+}
+
+.siteTitle {
+	font-family : "Courier New", Courier, monospace;
+	font-size : xx-large;
+	font-weight : bold;
+	color : Maroon;
+}
