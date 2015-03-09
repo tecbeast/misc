@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<project name="XbmcTools" default="jar" basedir=".">
+
+    <property name="src.dir" value="src" />
+    <property name="bin.dir" value="bin" />
+    <property name="lib.dir" value="lib" />
+    <property name="build.dir" value="build" />
+
+	<path id="libraries">
+		<fileset dir="${lib.dir}" includes="*.jar" />
+	</path>
+	
+	<target name="clean">
+		<delete dir="${bin.dir}" />
+		<delete dir="${build.dir}" />
+	</target>
+	
+	<target name="prepare" depends="clean">
+		<mkdir dir="${bin.dir}" />
+		<mkdir dir="${build.dir}" />
+	</target>
+
+	<target name="compile" depends="prepare">
+		<path id="classpath">
+			<path refid="libraries" />
+			<!-- <pathelement location="../FantasyFootballCommon/bin" /> -->
+		</path>
+		<property name="myClasspath" refid="classpath" />
+		<echo message="Classpath = ${myClasspath}" />
+		<javac srcdir="${src.dir}" destdir="${bin.dir}" target="1.6" source="1.6" debug="on">
+			<classpath refid="classpath" />
+		</javac>
+	</target>
+
+    <target name="jar" depends="compile">
+    	<!-- add compress="false" attribute to jar tag for no compression -->
+        <jar destfile="${build.dir}/${ant.project.name}.jar" update="false">
+            <manifest>
+              <attribute name="Built-By" value="${user.name}" />
+              <attribute name="Main-Class" value="com.balancedbytes.tools.xbmc.RenameXbmcEpisodes" />
+              <attribute name="Application-Name" value="XbmcTools" />
+            </manifest>
+            <zipfileset dir="${bin.dir}" includes="**/*.class" />
+        	<zipgroupfileset dir="${lib.dir}" includes="*.jar" />
+        </jar>
+    </target>
+	
+</project>
