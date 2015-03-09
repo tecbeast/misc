@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<status-list>
+	
+	<status id="verliehen">
+		<name>verliehen</name>
+	</status>
+	
+	<status id="gelagert">
+		<name>gelagert</name>
+	</status>
+	
+	<status id="gewuenscht">
+	  <name>auf der Wunschliste</name>
+	</status>
+	
+</status-list>

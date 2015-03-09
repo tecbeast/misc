@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<project name="BookCollection" default="build" basedir=".">
+
+	<target name="init">
+		<property name="src.dir" value="src" />
+		<property name="bin.dir" value="bin" />
+		<property name="lib.dir" value="lib" />
+		<property name="rsc.dir" value="rsc" />
+		<property name="icons.dir" value="${rsc.dir}/icons" />
+		<property name="covers.dir" value="${rsc.dir}/covers" />
+		<property name="layouts.dir" value="${rsc.dir}/layouts" />
+		<property name="build.dir" value="build" />
+		<property name="deploy.dir" value="D:/Daten/Web/htdocs/test" />
+		<property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter" />
+		<path id="classpath">
+			<fileset dir="${lib.dir}" includes="*.jar" />
+		</path>		
+		<property name="classpath" refid="classpath" />
+	</target>
+	
+	<target name="clean" depends="init">
+		<delete dir="${bin.dir}" />
+		<delete dir="${build.dir}" />
+	</target>
+	
+	<target name="prepare" depends="clean">
+		<mkdir dir="${bin.dir}" />
+		<mkdir dir="${build.dir}" />
+	</target>
+
+	<target name="compile" depends="prepare">
+		<javac srcdir="${src.dir}" destdir="${bin.dir}" classpath="${classpath}" />
+	</target>
+
+	<target name="jars" depends="compile">
+		<jar destfile="${build.dir}/${ant.project.name}.jar">
+			<zipfileset dir="${bin.dir}" includes="**/*.class" />
+			<zipfileset dir="${icons.dir}" includes="**" prefix="icons" />
+			<zipfileset dir="${layouts.dir}" includes="**" prefix="layouts" />
+		</jar>
+		<jar destfile="${build.dir}/${ant.project.name}Data.jar">
+			<zipfileset dir="${covers.dir}" includes="**" prefix="covers" />
+		</jar>
+		<copy todir="${build.dir}">
+			<fileset dir="${lib.dir}" includes="*.jar" />
+		</copy>
+	</target>
+	
+	<target name="sign" depends="jars">
+		<signjar keystore="${rsc.dir}/keystore" storepass="keystore" alias="georg" keypass="dragon">
+			<fileset dir="${build.dir}" includes="*.jar" />
+		</signjar>
+	</target>	
+
+	<target name="deploy" depends="sign">
+		<copy todir="${deploy.dir}">
+			<fileset dir="${build.dir}" includes="*.jar" />
+			<fileset file="${rsc.dir}/${ant.project.name}.jnlp" />
+		</copy>
+	</target>
+	
+	<target name="build">
+		<antcall target="compile" />
+		<antcall target="jars" />
+	</target>
+
+</project>

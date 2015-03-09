@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<layout-list>
+
+  <layout id="bookLayout">
+    
+    <gridbagDefaults>
+      <gridWidth>1</gridWidth>
+      <gridHeight>1</gridHeight>
+      <anchor>NORTH</anchor>
+      <fill>HORIZONTAL</fill>
+      <weightX>1.0</weightX>
+      <weightY>0.0</weightY>
+      <insets top="0" left="0" bottom="0" right="0" />
+      <ipadX>0</ipadX>
+      <ipadY>0</ipadY>
+    </gridbagDefaults>      
+
+    <gridbagConstraints id="isbnComponent">
+      <gridX>0</gridX>
+      <gridY>0</gridY>
+    </gridbagConstraints>
+    
+    <gridbagConstraints id="publisherComponent">
+      <gridX>0</gridX>
+      <gridY>1</gridY>
+    </gridbagConstraints>
+    
+    <gridbagConstraints id="titleComponent">
+      <gridX>0</gridX>
+      <gridY>2</gridY>
+    </gridbagConstraints>
+    
+    <gridbagConstraints id="authorComponent">
+      <gridX>0</gridX>
+      <gridY>3</gridY>
+    </gridbagConstraints>
+    
+    <gridbagConstraints id="seriesComponent">
+      <gridX>0</gridX>
+      <gridY>4</gridY>
+    </gridbagConstraints>
+    
+    <gridbagConstraints id="detailsComponent">
+      <gridX>0</gridX>
+      <gridY>5</gridY>
+    </gridbagConstraints>
+    
+    <gridbagConstraints id="imageComponent">
+      <gridX>1</gridX>
+      <gridY>0</gridY>
+      <gridHeight>5</gridHeight>
+      <anchor>CENTER</anchor>
+      <fill>BOTH</fill>
+      <weightX>0.5</weightX>
+      <weightY>0.5</weightY>
+    </gridbagConstraints>
+    
+    <gridbagConstraints id="notesComponent">
+      <gridX>1</gridX>
+      <gridY>5</gridY>
+      <anchor>CENTER</anchor>
+      <fill>BOTH</fill>
+      <weightX>0.5</weightX>
+      <weightY>0.5</weightY>
+    </gridbagConstraints>
+    
+    <gridbagConstraints id="buttonComponent">
+      <gridX>0</gridX>
+      <gridY>6</gridY>
+      <gridWidth>2</gridWidth>
+      <anchor>EAST</anchor>
+      <fill>NONE</fill>
+      <insets top="3" left="3" bottom="3" right="3" />
+    </gridbagConstraints>
+    
+  </layout>
+  
+  <layout id="titleLayout">
+  
+    <gridbagDefaults>
+      <gridWidth>1</gridWidth>
+      <gridHeight>1</gridHeight>
+      <weightY>0.0</weightY>
+      <ipadX>0</ipadX>
+      <ipadY>0</ipadY>
+    </gridbagDefaults>
+    
+    <gridbagConstraints id="titleLabel">
+      <gridX>0</gridX>
+      <gridY>0</gridY>
+      <anchor>EAST</anchor>
+      <fill>NONE</fill>
+      <weightX>0.0</weightX>
+      <insets top="0" left="0" bottom="3" right="3" />
+    </gridbagConstraints> 
+  
+    <gridbagConstraints id="titleField">
+      <gridX>1</gridX>
+      <gridY>0</gridY>
+      <anchor>WEST</anchor>
+      <fill>HORIZONTAL</fill>
+      <weightX>1.0</weightX>
+      <insets top="0" left="0" bottom="3" right="0" />
+    </gridbagConstraints> 
+  
+    <gridbagConstraints id="subtitleLabel">
+      <gridX>0</gridX>
+      <gridY>1</gridY>
+      <anchor>EAST</anchor>
+      <fill>NONE</fill>
+      <weightX>0.0</weightX>
+      <insets top="0" left="0" bottom="0" right="3" />
+    </gridbagConstraints> 
+  
+    <gridbagConstraints id="subtitleField">
+      <gridX>1</gridX>
+      <gridY>1</gridY>
+      <anchor>WEST</anchor>
+      <fill>HORIZONTAL</fill>
+      <weightX>1.0</weightX>
+      <insets top="0" left="0" bottom="0" right="0" />
+    </gridbagConstraints> 
+  
+  </layout>
+
+  <layout id="authorLayout">
+    
+    <gridbagDefaults>
+      <anchor>CENTER</anchor>
+    	<gridWidth>1</gridWidth>
+    	<gridHeight>1</gridHeight>
+    	<weightX>0.0</weightX>
+    	<weightY>0.0</weightY>
+    	<ipadX>0</ipadX>
+    	<ipadY>0</ipadY>
+    	<insets top="0" left="0" bottom="0" right="0" />
+    </gridbagDefaults>
+    
+    <gridbagConstraints id="authorListScrollPane">
+      <gridX>0</gridX>
+      <gridY>0</gridY>
+      <gridWidth>2</gridWidth>
+      <fill>BOTH</fill>
+      <insets top="0" left="0" bottom="3" right="0" />
+    </gridbagConstraints>
+    
+    <gridbagConstraints id="authorCombo">
+      <gridX>0</gridX>
+      <gridY>1</gridY>
+      <fill>HORIZONTAL</fill>
+      <weightX>1.0</weightX>
+    </gridbagConstraints>
+    
+    <gridbagConstraints id="addAuthorButton">
+      <gridX>1</gridX>
+      <gridY>1</gridY>
+      <anchor>EAST</anchor>
+      <fill>NONE</fill>
+      <insets top="0" left="3" bottom="0" right="0" />
+    </gridbagConstraints>
+    
+  </layout>
+
+  <layout id="seriesLayout">
+    
+    <gridbagDefaults>
+      <anchor>CENTER</anchor>
+      <fill>NONE</fill>
+    	<gridWidth>1</gridWidth>
+    	<gridHeight>1</gridHeight>
+    	<weightX>0.0</weightX>
+    	<weightY>0.0</weightY>
+    	<ipadX>0</ipadX>
+    	<ipadY>0</ipadY>
+    	<insets top="0" left="0" bottom="0" right="0" />
+    </gridbagDefaults>
+
+    <gridbagConstraints id="seriesLabel">
+      <gridX>0</gridX>
+      <gridY>0</gridY>
+      <anchor>EAST</anchor>
+    	<insets top="0" left="0" bottom="3" right="3" />
+    </gridbagConstraints>
+    
+    <gridbagConstraints id="seriesCombo">
+      <gridX>1</gridX>
+      <gridY>0</gridY>
+    	<gridWidth>4</gridWidth>
+      <fill>HORIZONTAL</fill>
+    	<weightX>1.0</weightX>
+    	<insets top="0" left="0" bottom="3" right="0" />
+    </gridbagConstraints>
+    
+    <gridbagConstraints id="bookNumberLabel">
+      <gridX>0</gridX>
+      <gridY>1</gridY>
+      <anchor>EAST</anchor>
+    	<insets top="0" left="0" bottom="0" right="3" />
+    </gridbagConstraints>
+    
+    <gridbagConstraints id="bookNumberField">
+      <gridX>1</gridX>
+      <gridY>1</gridY>
+    </gridbagConstraints>
+    
+    <gridbagConstraints id="booksTotalLabel1">
+      <gridX>2</gridX>
+      <gridY>1</gridY>
+    	<insets top="0" left="3" bottom="0" right="3" />
+    </gridbagConstraints>
+    
+    <gridbagConstraints id="booksTotalField">
+      <gridX>3</gridX>
+      <gridY>1</gridY>
+    </gridbagConstraints>
+    
+    <gridbagConstraints id="booksTotalLabel2">
+      <gridX>4</gridX>
+      <gridY>1</gridY>
+      <anchor>WEST</anchor>
+      <insets top="0" left="3" bottom="0" right="0" />
+    </gridbagConstraints>
+    
+  </layout>  
+    
+</layout-list>

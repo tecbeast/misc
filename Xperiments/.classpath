@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+    <classpathentry kind="src" path=""/>
+    <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+    <classpathentry kind="lib" path="lib/jd3lib-a4.jar" sourcepath="/Xperiments/lib/src/jd3lib-a4-src.jar"/>
+    <classpathentry kind="lib" path="lib/piccolo-103.jar" sourcepath="/Xperiments/lib/src/piccolo-103-src.jar"/>
+    <classpathentry kind="src" path="/Utilities"/>
+    <classpathentry kind="lib" path="lib/commons-httpclient-2.0-rc3.jar" sourcepath="/Xperiments/lib/src/commons-httpclient-2.0-rc3-src.zip"/>
+    <classpathentry kind="lib" path="lib/commons-logging-1.3.0.jar" sourcepath="/Xperiments/lib/src/commons-logging-1.3.0-src.zip"/>
+    <classpathentry kind="output" path=""/>
+</classpath>

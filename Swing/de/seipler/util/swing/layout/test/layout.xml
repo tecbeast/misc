@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<layout>
+
+  <constraints-list id="buttonLayout">
+    
+    <constraints-default>
+      <anchor>CENTER</anchor>
+      <fill>HORIZONTAL</fill>
+    </constraints-default>      
+    
+    <constraints id="button1">
+      <gridx>0</gridx>
+      <gridy>0</gridy>
+      <weightx>0.5</weightx>
+    </constraints>
+    
+    <constraints id="button2">		
+      <gridx>1</gridx>
+      <gridy>0</gridy>
+    </constraints>
+    
+    <constraints id="button3">		
+      <gridx>2</gridx>
+      <gridy>0</gridy>
+    </constraints>
+    
+    <constraints id="button4">
+      <gridx>0</gridx>
+      <gridy>1</gridy>
+      <gridwidth>3</gridwidth>
+      <ipady>40</ipady>
+    </constraints>
+    
+    <constraints id="button5">
+      <gridx>1</gridx>
+      <gridy>2</gridy>
+      <gridwidth>2</gridwidth>
+      <weighty>1.0</weighty>
+      <insets top="10" left="0" bottom="0" right="0" />
+    </constraints>
+    
+  </constraints-list>
+
+</layout>

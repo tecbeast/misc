@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<series-list>
+
+  <series id="liveship_traders">
+    <name>The Liveship Traders</name>
+    <books-total>3</books-total>
+  </series>
+  
+  <series id="sword_of_truth">
+  	<name>The Sword of Truth</name>
+  	<books-total>7</books-total>
+  </series>
+
+  <series id="lord_of_the_rings">
+  	<name>The Lord of the Rings</name>
+  	<books-total>3</books-total>
+  </series>
+
+</series-list>

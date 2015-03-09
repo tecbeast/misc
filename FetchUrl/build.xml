@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<project name="FetchUrl" default="build" basedir=".">
+
+	<target name="init">
+		<property name="src.dir" value="src"/>
+		<property name="bin.dir" value="bin"/>
+		<property name="jar.file" value="${ant.project.name}.jar"/>
+		<!--
+		<property name="lib.dir" value="lib"/>
+		<path id="classpath">
+			<fileset dir="${lib.dir}" includes="*.jar"/>
+		</path>		
+		<property name="classpath" refid="classpath"/>
+		-->
+	</target>
+	
+	<target name="prepare" depends="init">
+		<mkdir dir="${bin.dir}"/>
+	</target>
+
+	<target name="clean" depends="init">
+		<delete dir="${bin.dir}"/>
+		<delete file="${jar.file}"/>
+	</target>
+	
+	<target name="compile" depends="prepare">
+		<javac srcdir="${src.dir}" destdir="${bin.dir}" classpath="${classpath}"/>
+	</target>
+
+	<target name="jar" depends="compile">
+		<jar destfile="${jar.file}">
+			<fileset dir="${bin.dir}" includes="**/*.class"/>
+		</jar>
+	</target>
+	
+	<target name="sign" depends="jar">
+		<signjar alias="georg" jar="${jar.file}" storepass="keystore"/>
+	</target>
+	
+	<target name="build">
+		<antcall target="compile"/>
+		<antcall target="jar"/>
+	</target>
+
+</project>

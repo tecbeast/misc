@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<genre-list>
+	
+	<genre id="fantasy">
+		<name>Fantasy</name>
+	</genre>
+	
+	<genre id="science_fiction">
+	  <name>Science-Fiction</name>
+	</genre>
+	
+</genre-list>

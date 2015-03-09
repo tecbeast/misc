@@ -1,0 +1,30 @@
+<?xml version="1.0"  encoding="iso-8859-1"?>
+
+<rating-list>
+	
+	<rating id="5">
+		<name>sehr gut</name>
+		<value>5</value>
+	</rating>
+	
+	<rating id="4">
+	  <name>gut</name>
+		<value>4</value>
+	</rating>
+	
+	<rating id="3">
+	  <name>befriedigend</name>
+		<value>3</value>
+	</rating>
+	
+	<rating id="2">
+	  <name>mäßig</name>
+		<value>2</value>
+	</rating>
+	
+	<rating id="1">
+	  <name>schlecht</name>
+		<value>1</value>
+	</rating>
+	
+</rating-list>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<publisher-list>
+
+  <publisher id="bantam">
+    <name>Bantam Books</name>
+  </publisher>
+
+  <publisher id="spectra">
+    <name>Spectra Books</name>
+  </publisher>
+
+</publisher-list>

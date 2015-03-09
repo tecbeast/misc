@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<layout-list>
+  
+  <layout id="bookLayout">
+    
+    <component id="ROOT">
+      
+      <gridBagLayout />
+      
+      <component id="sourceComponent">
+        
+        <gridLayout rows="1" columns="2" />
+        
+        <component id="isbnComponent">
+          <boxLayout orientation="X_AXIS" />
+          <component id="isbnField" />
+        </component>
+        
+        <component id="publisherComponent">
+          <boxLayout orientation="X_AXIS" />
+          <component id="publisherCombo" />
+        </component>
+        
+        <gridBagConstraints>
+          <gridX>0</gridX>
+          <gridY>0</gridY>
+          <anchor>NORTH</anchor>
+          <fill>HORIZONTAL</fill>
+          <weightX>1.0</weightX>
+        </gridBagConstraints>
+        
+      </component>
+      
+      <component id="titleComponent">
+        
+        <gridBagLayout />
+  
+        <component id="titleLabel">
+          <gridBagConstraints>
+            <gridX>0</gridX>
+            <gridY>0</gridY>
+            <anchor>EAST</anchor>
+            <fill>NONE</fill>
+            <weightX>0.0</weightX>
+            <insets top="0" left="0" bottom="3" right="3" />
+          </gridBagConstraints> 
+        </component>  
+      
+        <component id="titleField">
+          <gridBagConstraints>
+            <gridX>1</gridX>
+            <gridY>0</gridY>
+            <anchor>WEST</anchor>
+            <fill>HORIZONTAL</fill>
+            <weightX>1.0</weightX>
+            <insets top="0" left="0" bottom="3" right="0" />
+          </gridBagConstraints> 
+        </component>  
+    
+        <component id="subtitleLabel">
+          <gridBagConstraints>
+            <gridX>0</gridX>
+            <gridY>1</gridY>
+            <anchor>EAST</anchor>
+            <fill>NONE</fill>
+            <weightX>0.0</weightX>
+            <insets top="0" left="0" bottom="0" right="3" />
+          </gridBagConstraints> 
+        </component>  
+    
+        <component id="subtitleField">
+          <gridBagConstraints>
+            <gridX>1</gridX>
+            <gridY>1</gridY>
+            <anchor>WEST</anchor>
+            <fill>HORIZONTAL</fill>
+            <weightX>1.0</weightX>
+            <insets top="0" left="0" bottom="0" right="0" />
+          </gridBagConstraints> 
+        </component>  
+        
+        <gridBagConstraints>
+          <gridX>0</gridX>
+          <gridY>1</gridY>
+          <anchor>NORTH</anchor>
+          <fill>HORIZONTAL</fill>
+          <weightX>1.0</weightX>
+        </gridBagConstraints>
+        
+      </component>
+
+      <component id="authorComponent">
+        
+        <gridBagLayout />
+      
+        <component id="authorListScrollPane">
+          <gridBagConstraints>
+            <gridX>0</gridX>
+            <gridY>0</gridY>
+            <gridWidth>2</gridWidth>
+            <fill>BOTH</fill>
+            <insets top="0" left="0" bottom="3" right="0" />
+          </gridBagConstraints>
+        </component>
+      
+        <component id="authorCombo">
+          <gridBagConstraints>
+            <gridX>0</gridX>
+            <gridY>1</gridY>
+            <fill>HORIZONTAL</fill>
+            <weightX>1.0</weightX>
+            <insets top="0" left="0" bottom="0" right="0" />
+          </gridBagConstraints>
+        </component>
+      
+        <component id="addAuthorButton">
+          <gridBagConstraints>
+            <gridX>1</gridX>
+            <gridY>1</gridY>
+            <anchor>EAST</anchor>
+            <fill>NONE</fill>
+            <insets top="0" left="3" bottom="0" right="0" />
+          </gridBagConstraints>
+        </component>
+        
+        <gridBagConstraints>
+          <gridX>0</gridX>
+          <gridY>2</gridY>
+          <anchor>NORTH</anchor>
+          <fill>HORIZONTAL</fill>
+          <weightX>1.0</weightX>
+        </gridBagConstraints>
+        
+      </component>
+            
+      <component id="seriesComponent">
+        
+        <gridBagLayout />
+      
+        <component id="seriesLabel">
+          <gridBagConstraints>
+            <gridX>0</gridX>
+            <gridY>0</gridY>
+            <anchor>EAST</anchor>
+            <insets top="0" left="0" bottom="3" right="3" />
+          </gridBagConstraints>
+        </component>
+        
+        <component id="seriesCombo">
+          <gridBagConstraints>
+            <gridX>1</gridX>
+            <gridY>0</gridY>
+            <gridWidth>4</gridWidth>
+            <fill>HORIZONTAL</fill>
+            <weightX>1.0</weightX>
+            <insets top="0" left="0" bottom="3" right="0" />
+          </gridBagConstraints>
+        </component>
+        
+        <component id="bookNumberLabel">
+          <gridBagConstraints>
+            <gridX>0</gridX>
+            <gridY>1</gridY>
+            <anchor>EAST</anchor>
+            <insets top="0" left="0" bottom="0" right="3" />
+          </gridBagConstraints>
+        </component>
+        
+        <component id="bookNumberField">
+          <gridBagConstraints id="bookNumberField">
+            <gridX>1</gridX>
+            <gridY>1</gridY>
+          </gridBagConstraints>
+        </component>
+        
+        <component id="booksTotalLabel1">
+          <gridBagConstraints>
+            <gridX>2</gridX>
+            <gridY>1</gridY>
+            <insets top="0" left="3" bottom="0" right="3" />
+          </gridBagConstraints>
+        </component>
+        
+        <component id="booksTotalField">
+          <gridBagConstraints>
+            <gridX>3</gridX>
+            <gridY>1</gridY>
+          </gridBagConstraints>
+        </component>
+        
+        <component id="booksTotalLabel2">
+          <gridBagConstraints>
+            <gridX>4</gridX>
+            <gridY>1</gridY>
+            <anchor>WEST</anchor>
+            <insets top="0" left="3" bottom="0" right="0" />
+          </gridBagConstraints>
+        </component>
+
+        <gridBagConstraints>
+          <gridX>0</gridX>
+          <gridY>3</gridY>
+          <anchor>NORTH</anchor>
+          <fill>HORIZONTAL</fill>
+          <weightX>1.0</weightX>
+        </gridBagConstraints>
+        
+      </component>
+
+      <component id="detailsComponent1">
+        
+        <gridLayout rows="3" columns="2" />
+        
+        <component id="categoryComponent">
+          <boxLayout orientation="X_AXIS" />
+          <component id="categoryCombo" />
+        </component>
+        
+        <component id="genreComponent">
+          <boxLayout orientation="X_AXIS" />
+          <component id="genreCombo" />
+        </component>
+        
+        <component id="languageComponent">
+          <boxLayout orientation="X_AXIS" />
+          <component id="languageCombo" />
+        </component>
+        
+        <component id="editionComponent">
+          <boxLayout orientation="X_AXIS" />
+          <component id="editionCombo" />
+        </component>
+        
+        <component id="statusComponent">
+          <boxLayout orientation="X_AXIS" />
+          <component id="statusCombo" />
+        </component>
+        
+        <component id="ratingComponent">
+          <boxLayout orientation="X_AXIS" />
+          <component id="ratingCombo" />
+        </component>
+        
+        <gridBagConstraints>
+          <gridX>0</gridX>
+          <gridY>4</gridY>
+          <anchor>NORTH</anchor>
+          <fill>HORIZONTAL</fill>
+          <weightX>1.0</weightX>
+        </gridBagConstraints>
+        
+      </component>
+
+      <component id="detailsComponent2">
+        
+        <gridLayout rows="1" columns="3" />
+        
+        <component id="printingDateComponent">
+          <boxLayout orientation="X_AXIS" />
+          <component id="printingDateField" />
+        </component>
+        
+        <component id="pagesComponent">
+          <boxLayout orientation="X_AXIS" />
+          <component id="pagesField" />
+        </component>
+        
+        <component id="priceComponent">
+          <boxLayout orientation="X_AXIS" />
+          <component id="priceField" />
+        </component>
+        
+        <gridBagConstraints>
+          <gridX>0</gridX>
+          <gridY>5</gridY>
+          <anchor>NORTH</anchor>
+          <fill>HORIZONTAL</fill>
+          <weightX>1.0</weightX>
+        </gridBagConstraints>
+        
+      </component>
+
+      <component id="imageComponent">
+        
+        <preferredSize width="200" height="200" />
+        
+        <gridBagConstraints>
+          <gridX>1</gridX>
+          <gridY>0</gridY>
+          <gridHeight>4</gridHeight>
+          <anchor>CENTER</anchor>
+          <fill>BOTH</fill>
+          <weightX>0.5</weightX>
+          <weightY>0.5</weightY>
+        </gridBagConstraints>
+        
+      </component>
+
+      <component id="notesComponent">
+        
+        <boxLayout orientation="X_AXIS" />
+        
+        <component id="notesScrollPane" />
+        
+        <gridBagConstraints>
+          <gridX>1</gridX>
+          <gridY>4</gridY>
+          <gridHeight>2</gridHeight>
+          <anchor>CENTER</anchor>
+          <fill>BOTH</fill>
+          <weightX>0.5</weightX>
+          <weightY>0.5</weightY>
+        </gridBagConstraints>
+        
+      </component>
+    
+      <component id="buttonComponent">
+        
+        <boxLayout orientation="X_AXIS" />
+        
+        <component id="saveBookButton" />
+        <component id="newBookButton" />
+        <component id="helpBookButton" />
+        
+        <gridBagConstraints>
+          <gridX>0</gridX>
+          <gridY>6</gridY>
+          <gridWidth>2</gridWidth>
+          <anchor>EAST</anchor>
+          <fill>NONE</fill>
+          <insets top="3" left="3" bottom="3" right="3" />
+        </gridBagConstraints>
+        
+      </component>
+    
+    </component>
+    
+  </layout>
+  
+</layout-list>

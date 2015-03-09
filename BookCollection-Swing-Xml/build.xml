@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<project name="BookCollection" default="build" basedir=".">
+
+	<target name="init">
+		<property name="src.dir" value="src" />
+		<property name="bin.dir" value="bin" />
+		<property name="lib.dir" value="lib" />
+		<property name="rsc.dir" value="rsc" />
+		<property name="icons.dir" value="${rsc.dir}/icons" />
+		<property name="layouts.dir" value="${rsc.dir}/layouts" />
+		<property name="data.dir" value="${rsc.dir}/data" />
+		<property name="build.dir" value="${basedir}/build" />
+		<property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter" />
+		<path id="libraries">
+			<fileset dir="${lib.dir}" includes="*.jar" />
+		</path>
+		<property name="classpath" refid="libraries" />
+	</target>
+	
+	<target name="clean" depends="init">
+		<delete dir="${bin.dir}" />
+		<delete dir="${build.dir}" />
+	</target>
+	
+	<target name="prepare" depends="init">
+		<mkdir dir="${bin.dir}" />
+		<mkdir dir="${build.dir}" />
+	</target>
+
+	<target name="compile" depends="prepare">
+		<javac srcdir="${src.dir}" destdir="${bin.dir}" classpath="${classpath}" />
+	</target>
+
+	<target name="jars" depends="compile">
+		<pathconvert pathsep=" " property="manifest-classpath" refid="libraries">
+			<map from="${basedir}\${lib.dir}\" to="" />
+		</pathconvert>
+		<jar destfile="${build.dir}/${ant.project.name}.jar">
+			<zipfileset dir="${bin.dir}" includes="**/*.class" />
+			<zipfileset dir="${icons.dir}" includes="**/*" prefix="icons" />
+			<zipfileset dir="${layouts.dir}" includes="**/*" prefix="layouts" />
+ 		    <manifest>
+		      <attribute name="Built-By" value="${user.name}" />
+		      <attribute name="Main-Class" value="de.seipler.bookcollection.BookCollection" />
+		      <attribute name="Class-Path" value="${ant.project.name}Data.jar ${manifest-classpath}" />
+		    </manifest>
+		</jar>
+		<jar destfile="${build.dir}/${ant.project.name}Data.jar">
+			<zipfileset dir="${data.dir}" includes="**/*" prefix="data" />
+		</jar>
+		<copy todir="${build.dir}">
+			<fileset dir="${lib.dir}" includes="*.jar" />
+		</copy>
+	</target>
+	
+	<target name="build">
+		<antcall target="compile" />
+		<antcall target="jars" />
+	</target>
+
+</project>

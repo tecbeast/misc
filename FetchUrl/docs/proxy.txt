@@ -1,0 +1,2 @@
+ProxyEinstellungen auf der Kommandozeile:
+java  -Dhttp.proyHost=wwwproy.bank.dresdner.net -Dhttp.proxyPort=8080 de.seipler.web.fetchurl.FetchUrl

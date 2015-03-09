@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp
+  spec="1.0+"
+  codebase="http://localhost/test/"
+  href="BookCollection.jnlp">
+  <information>
+    <title>BookCollection Demo</title>
+    <vendor>Georg Seipler</vendor>
+    <homepage href="docs/help.html"/>
+    <description>BookCollection Swing Demo Application</description>
+    <offline-allowed/>
+  </information>
+  <security />
+  <resources os="Windows" arch="x86">
+    <j2se version="1.4+" />
+    <jar href="BookCollection.jar" />
+    <jar href="BookCollectionData.jar" />
+    <jar href="looks-121.jar" />
+    <jar href="hsqldb-171.jar" />
+    <property name="javax.xml.parsers.SAXParserFactory" value="com.bluecast.xml.JAXPSAXParserFactory" />
+	</resources>
+  <application-desc main-class="de.seipler.bookcollection.BookCollection" />
+</jnlp>

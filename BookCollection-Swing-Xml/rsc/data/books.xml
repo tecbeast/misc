@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<book-list>
+
+  <book id="1">
+    <isbn>0553575635</isbn>
+    <publisher-id>spectra</publisher-id>
+    <title>Ship of Magic</title>
+    <subtitle />
+    <authors>
+      <author-id>hobb_robin</author-id>
+    </authors>
+    <series-id>liveship_traders</series-id>
+    <book-number>1</book-number>
+    <category-id>roman</category-id>
+    <genre-id>fantasy</genre-id>
+    <language-id>englisch</language-id>
+    <edition-id>taschenbuch</edition-id>
+    <pages>832</pages>
+    <printing-date>1999-03-01</printing-date>
+    <cover-file>liveship_traders_1.jpg</cover-file>
+    <notes />
+  </book>
+  
+  <book id="2">
+    <isbn>0553575643</isbn>
+    <publisher-id>spectra</publisher-id>
+    <title>Mad Ship</title>
+    <subtitle />
+    <authors>
+      <author-id>hobb_robin</author-id>
+    </authors>
+    <series-id>liveship_traders</series-id>
+    <book-number>2</book-number>
+    <category-id>roman</category-id>
+    <genre-id>fantasy</genre-id>
+    <language-id>englisch</language-id>
+    <edition-id>taschenbuch</edition-id>
+    <pages>864</pages>
+    <printing-date>2000-04-01</printing-date>
+    <cover-file>liveship_traders_2.jpg</cover-file>
+    <notes />
+  </book>
+
+  <book id="3">
+    <isbn>0553575651</isbn>
+    <publisher-id>spectra</publisher-id>
+    <title>Ship of Destiny</title>
+    <subtitle />
+    <authors>
+      <author-id>hobb_robin</author-id>
+    </authors>
+    <series-id>liveship_traders</series-id>
+    <book-number>3</book-number>
+    <category-id>roman</category-id>
+    <genre-id>fantasy</genre-id>
+    <language-id>englisch</language-id>
+    <edition-id>taschenbuch</edition-id>
+    <pages>816</pages>
+    <printing-date>2001-11-01</printing-date>
+    <cover-file>liveship_traders_3.jpg</cover-file>
+    <notes />
+  </book>
+
+</book-list>

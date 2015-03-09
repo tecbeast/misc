@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<language-list>
+	
+	<language id="deutsch">
+		<name>Deutsch</name>
+	</language>
+	
+	<language id="englisch">
+	  <name>Englisch</name>
+	</language>
+	
+</language-list>

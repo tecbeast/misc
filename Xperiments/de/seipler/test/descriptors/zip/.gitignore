@@ -1,0 +1,14 @@
+/DescriptorException.class
+/FactoryException.class
+/MP3Descriptor.class
+/MP3DescriptorFactory.class
+/MP3DescriptorHandler$Terminal.class
+/MP3DescriptorHandler$TerminalFactory.class
+/MP3DescriptorHandler.class
+/TestMP3GlobalZip$1.class
+/TestMP3GlobalZip.class
+/TestMP3LocalZip$1.class
+/TestMP3LocalZip$2.class
+/TestMP3LocalZip.class
+/XMLFormatter.class
+/XMLFormatterPerformance.class

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<author-list>
+
+  <author id="hobb_robin">
+    <name>Hobb</name>
+    <surname>Robin</surname>
+    <title/>
+    <sex>female</sex>
+  </author>
+
+  <author id="williams_tad">
+    <name>Williams</name>
+    <surname>Tad</surname>
+    <title/>
+    <sex>male</sex>
+  </author>
+  
+  <author id="hickman_tracy">
+    <name>Hickman</name>
+    <surname>Tracy</surname>
+    <title/>
+    <sex>male</sex>
+  </author>
+  
+  <author id="weis_margaret">
+    <name>Weis</name>
+    <surname>Margaret</surname>
+    <title/>
+    <sex>female</sex>
+  </author>
+
+  <author id="asprin_robert">
+    <name>Asprin</name>
+    <surname>Robert</surname>
+    <title/>
+    <sex>male</sex>
+  </author>
+
+  <author id="martin_george">
+    <name>Martin</name>
+    <surname>George R. R.</surname>
+    <title/>
+    <sex>male</sex>
+  </author>
+
+  <author id="tolkien_jrr">
+    <name>Tolkien</name>
+    <surname>J. R. R.</surname>
+    <title/>
+    <sex>male</sex>
+  </author>
+
+</author-list>

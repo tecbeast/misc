@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<edition-list>
+	
+	<edition id="taschenbuch">
+		<name>Taschenbuch</name>
+	</edition>
+	
+	<edition id="gebundene_ausgabe">
+	  <name>Gebundene Ausgabe</name>
+	</edition>
+	
+</edition-list>

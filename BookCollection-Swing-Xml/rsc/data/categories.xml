@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<category-list>
+	
+	<category id="roman">
+		<name>Roman</name>
+	</category>
+	
+	<category id="comic">
+	  <name>Comic</name>
+	</category>
+	
+</category-list>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+    <classpathentry kind="src" path="src"/>
+    <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+    <classpathentry kind="lib" path="rsc"/>
+    <classpathentry kind="lib" path="lib/looks-121.jar" sourcepath="/BookCollection-Swing/lib/src/looks-121-src.zip"/>
+    <classpathentry kind="output" path="bin"/>
+</classpath>
