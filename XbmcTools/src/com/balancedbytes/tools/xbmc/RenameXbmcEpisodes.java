@@ -22,38 +22,41 @@ import org.jsoup.select.Elements;
 public class RenameXbmcEpisodes {
   
   public static final String FILE_SUFFIX = ".mkv";
-
-  public static void main(String[] args) throws IOException {
-
-    if ((args == null) || (args.length < 1)) {
-      System.out.println("Usage: java RenameXbmcEpisodes <directory>");
-      return;
-    }
-   
-    File dir = new File(args[0]);
-    String url = readUrlFromInternetShortcut(new File(dir, "thetvdb.url"));
+  
+  private MessageListener fMessageListener;
+  
+  public RenameXbmcEpisodes() {
+    setMessageListener(
+      new MessageListener() {
+        public void addMessage(String message) {
+            System.out.println(message);
+        }
+      }
+    );
+  }
+  
+  public void rename(File dir, String url) throws IOException {
     
-    if ((url == null) || (url.length() == 0)) {
-      System.err.println("Unable to open URL");
-      return;
-    }
-    
-    System.out.println("Fetching url " +  url);
+    addMessage("Scan URL");
 
     Map<Integer, String> episodeTitleByNr = scanUrl(url);
 
     Pattern pattern = Pattern.compile("^s([0-9]+)e([0-9]+).*");
     
     for (File file : dir.listFiles()) {
+      
       if (!file.isFile()) {
         continue;
       }
+      
       String oldFileName = file.getName().toLowerCase();
       if (!oldFileName.endsWith(FILE_SUFFIX)) {
         continue;
       }
+      
       Matcher matcher = pattern.matcher(oldFileName);
       if (matcher.matches()) {
+        
         String season = matcher.group(1);
         String episode = matcher.group(2);
         int episodeNr = 0;
@@ -68,14 +71,53 @@ public class RenameXbmcEpisodes {
         newFileName.append(" ").append(escape(episodeTitleByNr.get(episodeNr)));
         newFileName.append(FILE_SUFFIX);
         File newFile = new File(file.getParent(), newFileName.toString());
-        System.out.println(newFile.getAbsolutePath());
+        
+        addMessage("Rename " + newFile.getName());
+
         file.renameTo(newFile);
+        
       }
+      
     }
     
   }
   
-  private static Map<Integer, String> scanUrl(String url) throws IOException {
+  public void setMessageListener(MessageListener pMessageListener) {
+    fMessageListener = pMessageListener;
+  }
+  
+  public MessageListener getMessageListener() {
+    return fMessageListener;
+  }
+  
+  private void addMessage(String message) {
+    if (fMessageListener != null) {
+      fMessageListener.addMessage(message);
+    }
+  }
+  
+  public static void main(String[] args) throws IOException {
+
+    if ((args == null) || (args.length < 1)) {
+      System.out.println("Usage: java RenameXbmcEpisodes <directory>");
+      return;
+    }
+
+    RenameXbmcEpisodes util = new RenameXbmcEpisodes();
+    
+    File dir = new File(args[0]);
+    String url = util.readUrlFromInternetShortcut(new File(dir, "thetvdb.url"));
+    
+    if ((url == null) || (url.length() == 0)) {
+      System.err.println("Unable to open URL");
+      return;
+    }
+    
+    util.rename(dir, url);
+    
+  }
+  
+  private Map<Integer, String> scanUrl(String url) throws IOException {
 
     Map<Integer, String> episodeTitleByNr = new HashMap<Integer, String>();
     int episodeNr = -1;
@@ -103,7 +145,7 @@ public class RenameXbmcEpisodes {
     
   }
   
-  private static String readUrlFromInternetShortcut(File file) {
+  private String readUrlFromInternetShortcut(File file) {
     BufferedReader in = null;
     try {
       String line = null;
@@ -123,7 +165,7 @@ public class RenameXbmcEpisodes {
     }
   }
   
-  private static String escape(String label) {
+  private String escape(String label) {
     if ((label != null) && (label.length() > 0)) {
       label = label.replaceAll("ä", "ae");
       label = label.replaceAll("Ä", "Ae");
