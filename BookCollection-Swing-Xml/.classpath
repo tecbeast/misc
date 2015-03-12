@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-    <classpathentry kind="src" path="src"/>
-    <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-    <classpathentry kind="lib" path="rsc"/>
-    <classpathentry kind="lib" path="lib/looks-121.jar" sourcepath="/BookCollection-Swing/lib/src/looks-121-src.zip"/>
-    <classpathentry kind="output" path="bin"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="rsc"/>
+	<classpathentry kind="lib" path="lib/jgoodies-looks-2.7.0.jar" sourcepath="lib/jgoodies-looks-2.7.0-sources.zip"/>
+	<classpathentry kind="lib" path="lib/jgoodies-common-1.8.1.jar" sourcepath="lib/jgoodies-common-1.8.1-sources.zip"/>
+	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -1,31 +1,18 @@
 package de.seipler.bookcollection.ui;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
-import javax.swing.JCheckBox;
 import javax.swing.JFrame;
-import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTree;
-import javax.swing.LookAndFeel;
 import javax.swing.UIManager;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
-import javax.swing.plaf.metal.DefaultMetalTheme;
-import javax.swing.plaf.metal.MetalLookAndFeel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
-
-import com.jgoodies.clearlook.ClearLookManager;
-import com.jgoodies.clearlook.ClearLookMode;
-import com.jgoodies.plaf.FontSizeHints;
-import com.jgoodies.plaf.Options;
-import com.jgoodies.plaf.plastic.PlasticLookAndFeel;
-import com.jgoodies.plaf.windows.ExtWindowsLookAndFeel;
 
 import de.seipler.bookcollection.model.BookSet;
 import de.seipler.bookcollection.model.EntityCache;
@@ -35,10 +22,9 @@ import de.seipler.bookcollection.model.EntityTreeNode;
  * 
  * @author Georg Seipler
  */
+@SuppressWarnings("serial")
 public class BookCollectionUi extends JFrame {
 
-  private int minWidth;
-  private int minHeight;
   private EntityCache entityCache;
 
   public BookCollectionUi(EntityCache entityCache) {
@@ -48,6 +34,19 @@ public class BookCollectionUi extends JFrame {
 
     this.entityCache = entityCache;
 
+    /*
+    try {
+      for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+        if ("Nimbus".equals(info.getName())) {
+          UIManager.setLookAndFeel(info.getClassName());
+          break;
+        }
+      }
+    } catch (Exception e) {
+      // If Nimbus is not available, you can set the GUI to another look and feel.
+    }
+    */
+    
     configureUi();
 
     DefaultMutableTreeNode root = new DefaultMutableTreeNode("Books");
@@ -60,7 +59,7 @@ public class BookCollectionUi extends JFrame {
     tree.addTreeSelectionListener(new TreeSelectionListener() {
 
       public void valueChanged(TreeSelectionEvent e) {
-        EntityTreeNode node = (EntityTreeNode) e.getPath().getLastPathComponent();
+        EntityTreeNode node = (EntityTreeNode) e.getNewLeadSelectionPath().getLastPathComponent();
         node.expand();
         TreePath path = new TreePath(node.getPath());
         tree.expandPath(path);
@@ -114,46 +113,12 @@ public class BookCollectionUi extends JFrame {
   }
 
   private void configureUi() {
-
-    Options.setDefaultIconSize(new Dimension(18, 18));
-    // LookAndFeel selectedLaf = new Plastic3DLookAndFeel();
-    // LookAndFeel selectedLaf = new PlasticXPLookAndFeel();
-    LookAndFeel selectedLaf = new ExtWindowsLookAndFeel();
-    // LookAndFeel selectedLaf = new WindowsLookAndFeel();
-    // LookAndFeel selectedLaf = new MetalLookAndFeel();
-
-    // Set font options   
-    UIManager.put(Options.USE_SYSTEM_FONTS_APP_KEY, Boolean.TRUE);
-    Options.setGlobalFontSizeHints(FontSizeHints.MIXED);
-    Options.setUseNarrowButtons(false);
-
-    // Global options
-    Options.setTabIconsEnabled(true);
-    ClearLookManager.setMode(ClearLookMode.OFF);
-    ClearLookManager.setPolicy(ClearLookManager.getPolicy().getClass().getName());
-    UIManager.put(Options.POPUP_DROP_SHADOW_ENABLED_KEY, Boolean.TRUE);
-
-    // Swing Settings
-    if (selectedLaf instanceof PlasticLookAndFeel) {
-      PlasticLookAndFeel.setMyCurrentTheme(PlasticLookAndFeel.createMyDefaultTheme());
-      PlasticLookAndFeel.setTabStyle(PlasticLookAndFeel.TAB_STYLE_DEFAULT_VALUE);
-      PlasticLookAndFeel.setHighContrastFocusColorsEnabled(false);
-    } else if (selectedLaf.getClass() == MetalLookAndFeel.class) {
-      MetalLookAndFeel.setCurrentTheme(new DefaultMetalTheme());
-    }
-
-    // Workaround caching in MetalRadioButtonUI
-    JRadioButton radio = new JRadioButton();
-    radio.getUI().uninstallUI(radio);
-    JCheckBox checkBox = new JCheckBox();
-    checkBox.getUI().uninstallUI(checkBox);
-
     try {
-      UIManager.setLookAndFeel(selectedLaf);
+      // UIManager.setLookAndFeel("com.jgoodies.looks.plastic.PlasticLookAndFeel");
+      UIManager.setLookAndFeel("com.jgoodies.looks.windows.WindowsLookAndFeel");
     } catch (Exception e) {
       System.out.println("Can't change L&F: " + e);
     }
-
   }
   
   public EntityCache getEntityCache() {
