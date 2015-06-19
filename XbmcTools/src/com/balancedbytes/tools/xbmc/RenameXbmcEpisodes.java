@@ -1,184 +1,231 @@
 package com.balancedbytes.tools.xbmc;
 
-import java.io.BufferedReader;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
+import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.JTextPane;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.SwingWorker.StateValue;
+import javax.swing.text.BadLocationException;
 
-/**
- * Tool to rename episodes in a directory according to title names from thetvdb.com.
- * 
- * @author TecBeast
- */
-public class RenameXbmcEpisodes {
-  
-  public static final String FILE_SUFFIX = ".mkv";
-  
-  private MessageListener fMessageListener;
-  
+@SuppressWarnings("serial")
+public class RenameXbmcEpisodes extends JFrame implements PropertyChangeListener, ActionListener {
+
+  private JTextField fDirTextField;
+  private JButton fDirButton;
+  private JTextField fUrlTextField;
+  private JTextPane fOutputPane;
+  private JScrollPane fScrollPane;
+  private JProgressBar fProgressBar;
+  private JButton fUpdateButton;
+
   public RenameXbmcEpisodes() {
-    setMessageListener(
-      new MessageListener() {
-        public void addMessage(String message) {
-            System.out.println(message);
+
+    super("RenameXbmcEpisodes");
+    
+    setDefaultCloseOperation(EXIT_ON_CLOSE);
+    
+    Box centerBox = Box.createVerticalBox();
+    centerBox.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+    
+    Box dirBox1 = Box.createHorizontalBox();
+    JLabel dirLabel = new JLabel("Series directory:");
+    // dirLabel.setFont(dirLabel.getFont().deriveFont(Font.BOLD));
+    dirBox1.add(dirLabel);
+    dirBox1.add(Box.createHorizontalGlue());
+
+    centerBox.add(dirBox1);
+
+    fDirTextField = new JTextField("");
+    fDirTextField.setMaximumSize(new Dimension(Integer.MAX_VALUE, fDirTextField.getPreferredSize().height));
+
+    fDirButton = new JButton();
+    try {
+      Image img = ImageIO.read(getClass().getResource("/com/jgoodies/looks/windows/icons/xp/TreeOpen.png"));
+      fDirButton.setIcon(new ImageIcon(img));
+    } catch (IOException ex) {
+    }
+
+    // create a file chooser that allows you to pick a directory
+    fDirButton.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent ae) {
+        JFileChooser chooser = new JFileChooser();
+        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        int option = chooser.showOpenDialog(RenameXbmcEpisodes.this);
+        if ((option == JFileChooser.APPROVE_OPTION) && (chooser.getSelectedFile() != null)) {
+          fDirTextField.setText(chooser.getSelectedFile().getAbsolutePath());
+        } else {
+          fDirTextField.setText("");
+        }
+      }
+    });
+
+    Box dirBox2 = Box.createHorizontalBox();
+    dirBox2.add(fDirTextField);
+    dirBox2.add(Box.createHorizontalStrut(5));
+    dirBox2.add(fDirButton);
+
+    centerBox.add(dirBox2);
+    
+    Box urlBox1 = Box.createHorizontalBox();
+    JLabel urlLabel = new JLabel("Series URL on www.thetvdb.com:");
+    // urlLabel.setFont(urlLabel.getFont().deriveFont(Font.BOLD));
+    urlBox1.add(urlLabel);
+    urlBox1.add(Box.createHorizontalGlue());
+
+    centerBox.add(Box.createVerticalStrut(5));
+    centerBox.add(urlBox1);
+
+    fUrlTextField = new JTextField("");
+    fUrlTextField.setMaximumSize(new Dimension(Integer.MAX_VALUE, fUrlTextField.getPreferredSize().height));
+    
+    Box urlBox2 = Box.createHorizontalBox();
+    urlBox2.add(fUrlTextField);
+    
+    centerBox.add(urlBox2);
+
+    Box outputBox1 = Box.createHorizontalBox();
+    JLabel outputLabel = new JLabel("Renamed Files:");
+    // urlLabel.setFont(urlLabel.getFont().deriveFont(Font.BOLD));
+    outputBox1.add(outputLabel);
+    outputBox1.add(Box.createHorizontalGlue());
+
+    centerBox.add(Box.createVerticalStrut(5));
+    centerBox.add(outputBox1);
+
+    fOutputPane = new JTextPane();
+    fScrollPane = new JScrollPane(fOutputPane);
+    fScrollPane.setPreferredSize(new Dimension(fScrollPane.getPreferredSize().width, 100));
+    fScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    
+    Box outputBox2 = Box.createHorizontalBox();
+    outputBox2.add(fScrollPane);
+
+    centerBox.add(outputBox2);
+    
+    fProgressBar = new JProgressBar(0, 100);
+    fProgressBar.setStringPainted(true);
+    fProgressBar.setString("");
+    
+    Box progressBox = Box.createHorizontalBox();
+    progressBox.add(fProgressBar);
+    
+    centerBox.add(Box.createVerticalStrut(5));
+    centerBox.add(progressBox);
+
+    centerBox.add(new Box.Filler(new Dimension(0, 5), new Dimension(0, 5), new Dimension(0, Integer.MAX_VALUE)));
+
+    fUpdateButton = new JButton("Update Filenames");
+    fUpdateButton.addActionListener(this);
+
+    JPanel updatePanel = new JPanel();
+    updatePanel.setLayout(new BoxLayout(updatePanel, BoxLayout.X_AXIS));
+    updatePanel.add(Box.createHorizontalGlue());
+    updatePanel.add(fUpdateButton);
+    updatePanel.add(Box.createHorizontalGlue());
+    
+    centerBox.add(updatePanel);
+
+    centerBox.add(Box.createHorizontalGlue());
+
+    getContentPane().setLayout(new BorderLayout());
+    getContentPane().add(centerBox, BorderLayout.CENTER);
+    pack();
+    
+    setSize(450, (int) getSize().getHeight());
+
+  }
+
+  /**
+   * Invoked when task's progress property changes.
+   */
+  public void propertyChange(PropertyChangeEvent evt) {
+      if ("progress".equals(evt.getPropertyName())) {
+        int progress = (Integer) evt.getNewValue();
+        fProgressBar.setIndeterminate(false);
+        fProgressBar.setValue(progress);
+        fProgressBar.setString(progress + "%");
+      }
+      if ("state".equals(evt.getPropertyName())) {
+        StateValue state = (StateValue) evt.getNewValue();
+        if (StateValue.STARTED == state) {
+          try {
+            fOutputPane.getDocument().remove(0, fOutputPane.getDocument().getLength());
+          } catch (BadLocationException badLocationException) {
+            // do nothing
+          }
+          fProgressBar.setValue(0);
+          fUpdateButton.setEnabled(false);
+          fProgressBar.setIndeterminate(true);
+          fProgressBar.setString("Scan URL");
+        }
+        if (StateValue.DONE == state) {
+          fUpdateButton.setEnabled(true);
+          fProgressBar.setIndeterminate(false);
+        }
+      }
+  }
+
+  public void actionPerformed(ActionEvent ae) {
+    File dir = new File(fDirTextField.getText());
+    String url = fUrlTextField.getText();
+    RenameXbmcEpisodesTask renameTask = new RenameXbmcEpisodesTask(dir, url, fOutputPane.getDocument());
+    renameTask.addPropertyChangeListener(this);
+    renameTask.execute();
+  }
+
+  /**
+   * Create the GUI and show it. For thread safety, this method should be
+   * invoked from the event-dispatching thread.
+   */
+  private static void createAndShowUi() {
+
+    try {
+      // UIManager.setLookAndFeel("com.jgoodies.looks.plastic.PlasticLookAndFeel");
+      UIManager.setLookAndFeel("com.jgoodies.looks.windows.WindowsLookAndFeel");
+    } catch (Exception e) {
+      System.err.println("Can't change Look&Feel: " + e);
+    }
+
+    // make sure we have nice window decorations.
+    JFrame.setDefaultLookAndFeelDecorated(true);
+
+    RenameXbmcEpisodes xbmcTools = new RenameXbmcEpisodes();
+    xbmcTools.setVisible(true);
+
+  }
+
+  public static void main(String[] args) {
+    // schedule a job for the event-dispatching thread:
+    // creating and showing this application's GUI.
+    SwingUtilities.invokeLater(
+      new Runnable() {
+        public void run() {
+          createAndShowUi();
         }
       }
     );
-  }
-  
-  public void rename(File dir, String url) throws IOException {
-    
-    addMessage("Scan URL");
-
-    Map<Integer, String> episodeTitleByNr = scanUrl(url);
-
-    Pattern pattern = Pattern.compile("^s([0-9]+)e([0-9]+).*");
-    
-    for (File file : dir.listFiles()) {
-      
-      if (!file.isFile()) {
-        continue;
-      }
-      
-      String oldFileName = file.getName().toLowerCase();
-      if (!oldFileName.endsWith(FILE_SUFFIX)) {
-        continue;
-      }
-      
-      Matcher matcher = pattern.matcher(oldFileName);
-      if (matcher.matches()) {
-        
-        String season = matcher.group(1);
-        String episode = matcher.group(2);
-        int episodeNr = 0;
-        if (episode.startsWith("0") && (episode.length() > 1)) {
-          episodeNr = Integer.parseInt(episode.substring(1));
-        } else {
-          episodeNr = Integer.parseInt(episode);
-        }
-        StringBuilder newFileName = new StringBuilder();
-        newFileName.append("S").append(season);
-        newFileName.append("E").append((episodeNr < 10) ? "0" : "").append(episodeNr);
-        newFileName.append(" ").append(escape(episodeTitleByNr.get(episodeNr)));
-        newFileName.append(FILE_SUFFIX);
-        File newFile = new File(file.getParent(), newFileName.toString());
-        
-        addMessage("Rename " + newFile.getName());
-
-        file.renameTo(newFile);
-        
-      }
-      
-    }
-    
-  }
-  
-  public void setMessageListener(MessageListener pMessageListener) {
-    fMessageListener = pMessageListener;
-  }
-  
-  public MessageListener getMessageListener() {
-    return fMessageListener;
-  }
-  
-  private void addMessage(String message) {
-    if (fMessageListener != null) {
-      fMessageListener.addMessage(message);
-    }
-  }
-  
-  public static void main(String[] args) throws IOException {
-
-    if ((args == null) || (args.length < 1)) {
-      System.out.println("Usage: java RenameXbmcEpisodes <directory>");
-      return;
-    }
-
-    RenameXbmcEpisodes util = new RenameXbmcEpisodes();
-    
-    File dir = new File(args[0]);
-    String url = util.readUrlFromInternetShortcut(new File(dir, "thetvdb.url"));
-    
-    if ((url == null) || (url.length() == 0)) {
-      System.err.println("Unable to open URL");
-      return;
-    }
-    
-    util.rename(dir, url);
-    
-  }
-  
-  private Map<Integer, String> scanUrl(String url) throws IOException {
-
-    Map<Integer, String> episodeTitleByNr = new HashMap<Integer, String>();
-    int episodeNr = -1;
-
-    Document doc = Jsoup.connect(url).get();
-    Elements links = doc.select("a[href*=?tab=episode]");
-
-    for (Element link : links) {
-      String linkText = link.text();
-      if ((linkText != null) && (linkText.length() > 0)) {
-        if (episodeNr < 0) {
-          try {
-            episodeNr = Integer.parseInt(linkText.trim());
-          } catch (NumberFormatException nfe) {
-            // do nothing
-          }
-        } else {
-          episodeTitleByNr.put(episodeNr, linkText.trim());
-          episodeNr = -1;
-        }
-      }
-    }
-    
-    return episodeTitleByNr;
-    
-  }
-  
-  private String readUrlFromInternetShortcut(File file) {
-    BufferedReader in = null;
-    try {
-      String line = null;
-      in = new BufferedReader(new FileReader(file));
-      while ((line = in.readLine()) != null) {
-        if ((line.length() > 5) && "url=".equalsIgnoreCase(line.substring(0, 4))) {
-          return line.substring(4);
-        }
-      }
-      return null;
-    } catch (IOException ioEx) {
-      return null;
-    } finally {
-      if (in != null) {
-        try { in.close(); } catch (Exception ioEx) { }
-      }
-    }
-  }
-  
-  private String escape(String label) {
-    if ((label != null) && (label.length() > 0)) {
-      label = label.replaceAll("ä", "ae");
-      label = label.replaceAll("Ä", "Ae");
-      label = label.replaceAll("ö", "oe");
-      label = label.replaceAll("Ö", "Oe");
-      label = label.replaceAll("ü", "ue");
-      label = label.replaceAll("Ü", "Ue");
-      label = label.replaceAll("ß", "ss");
-      label = label.replaceAll("\\?", "");
-      label = label.replaceAll("/", "_");
-      label = label.replaceAll("’", "");
-    }
-    return label;
   }
 
 }

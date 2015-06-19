@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="XbmcTools" default="jar" basedir=".">
+<project name="XbmcTools" default="RenameXbmcEpisodes.jar" basedir=".">
 
     <property name="src.dir" value="src" />
     <property name="bin.dir" value="bin" />
@@ -32,15 +32,15 @@
 		</javac>
 	</target>
 
-    <target name="jar" depends="compile">
+    <target name="RenameXbmcEpisodes.jar" depends="compile">
     	<!-- add compress="false" attribute to jar tag for no compression -->
-        <jar destfile="${build.dir}/${ant.project.name}.jar" update="false">
+        <jar destfile="${build.dir}/RenameXbmcEpisodes.jar" update="false">
             <manifest>
               <attribute name="Built-By" value="${user.name}" />
               <attribute name="Main-Class" value="com.balancedbytes.tools.xbmc.RenameXbmcEpisodes" />
-              <attribute name="Application-Name" value="XbmcTools" />
+              <attribute name="Application-Name" value="RenameXbmcEpisodes" />
             </manifest>
-            <zipfileset dir="${bin.dir}" includes="**/*.class" />
+            <zipfileset dir="${bin.dir}" includes="**/RenameXbmcEpisodes*.class" />
         	<zipgroupfileset dir="${lib.dir}" includes="*.jar" />
         </jar>
     </target>
