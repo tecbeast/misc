@@ -7,7 +7,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileFilter;
+import java.io.FileReader;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -25,8 +28,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
 import javax.swing.SwingWorker.StateValue;
+import javax.swing.UIManager;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 
 @SuppressWarnings("serial")
@@ -59,6 +64,27 @@ public class RenameXbmcEpisodes extends JFrame implements PropertyChangeListener
 
     fDirTextField = new JTextField("");
     fDirTextField.setMaximumSize(new Dimension(Integer.MAX_VALUE, fDirTextField.getPreferredSize().height));
+    // Listen for changes in the text
+    fDirTextField.getDocument().addDocumentListener(new DocumentListener() {
+      public void changedUpdate(DocumentEvent e) {
+        updateUrl();
+      }
+      public void removeUpdate(DocumentEvent e) {
+        updateUrl();
+      }
+      public void insertUpdate(DocumentEvent e) {
+        updateUrl();
+      }
+      private void updateUrl() {
+        if ((fDirTextField.getText().length() > 0) && (fUrlTextField.getText().length() == 0)) {
+          String url = findUrlShortcut(new File(fDirTextField.getText()));
+          if (url != null) {
+            fUrlTextField.setText(url);
+          }
+        }
+      }
+    });
+
 
     fDirButton = new JButton();
     try {
@@ -73,8 +99,9 @@ public class RenameXbmcEpisodes extends JFrame implements PropertyChangeListener
         JFileChooser chooser = new JFileChooser();
         chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         int option = chooser.showOpenDialog(RenameXbmcEpisodes.this);
-        if ((option == JFileChooser.APPROVE_OPTION) && (chooser.getSelectedFile() != null)) {
-          fDirTextField.setText(chooser.getSelectedFile().getAbsolutePath());
+        File selectedFile = chooser.getSelectedFile();
+        if ((option == JFileChooser.APPROVE_OPTION) && (selectedFile != null)) {
+          fDirTextField.setText(selectedFile.getAbsolutePath());
         } else {
           fDirTextField.setText("");
         }
@@ -214,6 +241,40 @@ public class RenameXbmcEpisodes extends JFrame implements PropertyChangeListener
     RenameXbmcEpisodes xbmcTools = new RenameXbmcEpisodes();
     xbmcTools.setVisible(true);
 
+  }
+  
+  private String findUrlShortcut(File dir) {
+    if ((dir == null) || !dir.isDirectory()) {
+      return null;
+    }
+    File[] files = dir.listFiles(new FileFilter() {
+      public boolean accept(File file) {
+        return ((file != null) && !file.isDirectory() && file.getName().endsWith(".url"));
+      }
+    });
+    if ((files != null) && (files.length > 0)) {
+      BufferedReader in = null;
+      String line = null;
+      try {
+        in = new BufferedReader(new FileReader(files[0]));
+        while ((line = in.readLine()) != null) {
+          if ((line.length() > 4) && line.startsWith("URL=")) {
+            return line.substring(4);
+          }
+        }
+      } catch (IOException ioe1) {
+        return null;
+      } finally {
+        if (in != null) {
+          try {
+            in.close();
+          } catch (IOException ioe2) {
+            // nothing to do at this point
+          }
+        }
+      }
+    }
+    return null;
   }
 
   public static void main(String[] args) {
