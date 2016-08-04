@@ -3,6 +3,7 @@ package com.balancedbytes.tools.xbmc;
 public class SeriesInfo {
 
   private String fTitle;
+  private int fNrSeasons;
   private int fMinSeason;
   private int fMaxSeason;
   private int fFSK;
@@ -46,6 +47,14 @@ public class SeriesInfo {
   
   public void setYear(int pYear) {
     fYear = pYear;
+  }
+  
+  public int getNrSeasons() {
+    return fNrSeasons;
+  }
+  
+  public void setNrSeasons(int pNrSeasons) {
+    fNrSeasons = pNrSeasons;
   }
   
 }

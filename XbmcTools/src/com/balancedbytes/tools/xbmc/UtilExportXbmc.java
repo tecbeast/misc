@@ -1,18 +1,15 @@
 package com.balancedbytes.tools.xbmc;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import com.jcraft.jsch.ChannelSftp.LsEntry;
+import com.jcraft.jsch.SftpATTRS;
 
 public class UtilExportXbmc {
   
@@ -63,38 +60,13 @@ public class UtilExportXbmc {
     return 0;
   }
   
-  public static void collect(File dir, List<File> emptyDirectories) {
-    List<File> nonEmptyDirectories = new ArrayList<File>();
-    findEmptyDirectories(dir, emptyDirectories, nonEmptyDirectories);
-    for (File file : nonEmptyDirectories) {
-      collect(file, emptyDirectories);  // recursion
+  public static boolean isValidDirEntry(LsEntry lsEntry) {
+    if (lsEntry == null) {
+      return false;
     }
-  }
-  
-  private static void findEmptyDirectories(File dir, List<File> emptyDirectories, List<File> nonEmptyDirectories) {
-    if ((emptyDirectories == null) || (nonEmptyDirectories == null)) {
-      return;
-    }
-    for (File file : findDirectories(dir)) {
-      if (findDirectories(file).length > 0) {
-        nonEmptyDirectories.add(file);
-      } else {
-        emptyDirectories.add(file);
-      }
-    }
-  }
-  
-  private static File[] findDirectories(File dir) {
-    if ((dir == null) || !dir.isDirectory()) {
-      return new File[0];
-    }
-    List<File> directories = new ArrayList<File>();
-    for (File file : dir.listFiles()) {
-      if (file.isDirectory()) {
-        directories.add(file);
-      }
-    }
-    return directories.toArray(new File[directories.size()]);
+    SftpATTRS attributes = lsEntry.getAttrs();
+    String filename = lsEntry.getFilename();
+    return ((attributes != null) && attributes.isDir() && (filename != null) && !".".equals(filename) && !"..".equals(filename));
   }
   
   public static void writeFile(File file, List<String> rows) throws IOException {
@@ -107,17 +79,6 @@ public class UtilExportXbmc {
       out.newLine();
     }
     out.close();
-  }
-  
-  public static Properties loadInfoFile(File dir) throws IOException {
-    Properties infoProperties = new Properties();
-    File infoFile = new File(dir, "info.txt");
-    if (infoFile.exists()) {
-      BufferedReader infoIn = new BufferedReader(new InputStreamReader(new FileInputStream(infoFile), Charset.forName("utf-8")));
-      infoProperties.load(infoIn);
-      infoIn.close();
-    }
-    return infoProperties;
   }
   
 }

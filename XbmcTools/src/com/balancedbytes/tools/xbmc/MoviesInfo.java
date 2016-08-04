@@ -1,15 +1,12 @@
 package com.balancedbytes.tools.xbmc;
 
-import java.io.File;
 
 public class MoviesInfo {
 
   private String fTitle;
   private int fFSK;
   private int fYear;
-  private String fCollection;
-  private int fPart;
-  private File fFile;
+  private String fFilename;
   
   public String getTitle() {
     return fTitle;
@@ -34,29 +31,13 @@ public class MoviesInfo {
   public void setYear(int pYear) {
     fYear = pYear;
   }
-  
-  public String getCollection() {
-    return fCollection;
+
+  public String getFilename() {
+    return fFilename;
   }
   
-  public void setCollection(String pCollection) {
-    fCollection = pCollection;
-  }
-  
-  public int getPart() {
-    return fPart;
-  }
-  
-  public void setPart(int pPart) {
-    fPart = pPart;
-  }
-  
-  public File getFile() {
-    return fFile;
-  }
-  
-  public void setFile(File pFile) {
-    fFile = pFile;
+  public void setFilename(String pFilename) {
+    fFilename = pFilename;
   }
   
 }
