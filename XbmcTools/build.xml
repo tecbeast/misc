@@ -41,6 +41,7 @@
               <attribute name="Application-Name" value="RenameXbmcEpisodes" />
             </manifest>
             <zipfileset dir="${bin.dir}" includes="**/RenameXbmcEpisodes*.class" />
+        	<zipgroupfileset dir="${lib.dir}" includes="jgoodies*.jar" />
         	<zipgroupfileset dir="${lib.dir}" includes="jsoup*.jar" />
         </jar>
     </target>

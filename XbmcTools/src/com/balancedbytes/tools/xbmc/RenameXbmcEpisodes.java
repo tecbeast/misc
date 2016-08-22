@@ -40,6 +40,7 @@ public class RenameXbmcEpisodes extends JFrame implements PropertyChangeListener
   private JTextField fDirTextField;
   private JButton fDirButton;
   private JTextField fUrlTextField;
+  private JTextField fSeasonTextField;
   private JTextPane fOutputPane;
   private JScrollPane fScrollPane;
   private JProgressBar fProgressBar;
@@ -53,6 +54,8 @@ public class RenameXbmcEpisodes extends JFrame implements PropertyChangeListener
     
     Box centerBox = Box.createVerticalBox();
     centerBox.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+    
+    // Series directory
     
     Box dirBox1 = Box.createHorizontalBox();
     JLabel dirLabel = new JLabel("Series directory:");
@@ -85,7 +88,6 @@ public class RenameXbmcEpisodes extends JFrame implements PropertyChangeListener
       }
     });
 
-
     fDirButton = new JButton();
     try {
       Image img = ImageIO.read(getClass().getResource("/com/jgoodies/looks/windows/icons/xp/TreeOpen.png"));
@@ -114,6 +116,8 @@ public class RenameXbmcEpisodes extends JFrame implements PropertyChangeListener
     dirBox2.add(fDirButton);
 
     centerBox.add(dirBox2);
+
+    // Series Url
     
     Box urlBox1 = Box.createHorizontalBox();
     JLabel urlLabel = new JLabel("Series URL on www.thetvdb.com:");
@@ -132,6 +136,26 @@ public class RenameXbmcEpisodes extends JFrame implements PropertyChangeListener
     
     centerBox.add(urlBox2);
 
+    // Series Season
+    
+    Box seasonBox1 = Box.createHorizontalBox();
+    JLabel seasonLabel = new JLabel("Series Season (optional, will use alphabetical sorting for episodes):");
+    seasonBox1.add(seasonLabel);
+    seasonBox1.add(Box.createHorizontalGlue());
+
+    centerBox.add(Box.createVerticalStrut(5));
+    centerBox.add(seasonBox1);
+
+    fSeasonTextField = new JTextField("");
+    fSeasonTextField.setMaximumSize(new Dimension(Integer.MAX_VALUE, fUrlTextField.getPreferredSize().height));
+    
+    Box seasonBox2 = Box.createHorizontalBox();
+    seasonBox2.add(fSeasonTextField);
+    
+    centerBox.add(seasonBox2);
+
+    // Output 
+        
     Box outputBox1 = Box.createHorizontalBox();
     JLabel outputLabel = new JLabel("Renamed Files:");
     // urlLabel.setFont(urlLabel.getFont().deriveFont(Font.BOLD));
@@ -217,7 +241,8 @@ public class RenameXbmcEpisodes extends JFrame implements PropertyChangeListener
   public void actionPerformed(ActionEvent ae) {
     File dir = new File(fDirTextField.getText());
     String url = fUrlTextField.getText();
-    RenameXbmcEpisodesTask renameTask = new RenameXbmcEpisodesTask(dir, url, fOutputPane.getDocument());
+    String season = fSeasonTextField.getText();
+    RenameXbmcEpisodesTask renameTask = new RenameXbmcEpisodesTask(dir, url, fOutputPane.getDocument(), season);
     renameTask.addPropertyChangeListener(this);
     renameTask.execute();
   }

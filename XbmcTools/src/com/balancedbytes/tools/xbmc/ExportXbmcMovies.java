@@ -89,7 +89,7 @@ public class ExportXbmcMovies implements IExportXbmc {
   }
   
   private List<String> sftpCollectDirs() {
-    List<String> result = new ArrayList<>();
+    List<String> result = new ArrayList<String>();
     SftpConnector sftp = new SftpConnector(SFTP_HOST, SFTP_PORT, SFTP_USER, SFTP_PASSWORD);
     try {
       sftp.connect();

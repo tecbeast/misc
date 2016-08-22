@@ -47,7 +47,7 @@ public class SftpConnector {
     if ((fChannel == null) || (path == null)) {
       return null;
     }
-    List<LsEntry> entries = new ArrayList<>();
+    List<LsEntry> entries = new ArrayList<LsEntry>();
     Vector<?> result = fChannel.ls(path);
     if (result != null) {
       for (int i = 0; i < result.size(); i++) {
